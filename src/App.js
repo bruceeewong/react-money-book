@@ -1,9 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ViewTab from './components/ViewTab';
-import TotalPrice from './components/TotalPrice';
 // import PriceList from './components/PriceList';
+// import ViewTab from './components/ViewTab';
+// import TotalPrice from './components/TotalPrice';
+import MonthPicker from './components/MonthPicker';
 
 // const items = [
 //   {
@@ -39,7 +40,13 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
       </header>
 
-      <ViewTab 
+      <MonthPicker
+        year={2020}
+        month={1}
+      >
+      </MonthPicker>
+
+      {/* <ViewTab 
         activeTab="list"
         onTabChange={(view) => alert(view)}  
       />
@@ -47,7 +54,7 @@ function App() {
       <TotalPrice
         income={17000}
         outcome={10000}
-      ></TotalPrice>
+      ></TotalPrice> */}
 
       {/* <PriceList
         items={items}
