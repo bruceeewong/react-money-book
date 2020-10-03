@@ -2,7 +2,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {padMonth, range, yearNearby} from '../utility';
+import {padMonth, range, yearNearby, toggleClass} from '../utility';
+
+const activeToggleItem= (input, expect) => {
+  return toggleClass(input, expect, 'dropdown-item active', 'dropdown-item');
+};
 
 class MonthPicker extends React.Component {
   constructor(props) {
@@ -28,6 +32,7 @@ class MonthPicker extends React.Component {
 
     return (
       <div className="dropdown month-picker-component">
+        {/* 下拉按钮部分 */}
         <h4>选择月份</h4>
         <button 
           className="btn btn-lg btn-secondary dropdown-toggle"
@@ -36,6 +41,7 @@ class MonthPicker extends React.Component {
           {`${year}年 ${padMonth(month)}月`}
         </button>
 
+        {/* 下拉菜单部分 */}
         {
           isOpen && 
           <div 
@@ -43,24 +49,29 @@ class MonthPicker extends React.Component {
             style={{ display: 'block' }}
           >
             <div className="row">
+              {/* 下拉菜单-年份列 */}
               <div className="col border-right">
                 {
                   yearRange.map(yearNum => (
                     <a 
                       key={yearNum}
-                      className="dropdown-item"  
+                      href="#"
+                      className={activeToggleItem(yearNum, year)}
                     >
                       {yearNum} 年
                     </a>
                   ))
                 }
               </div>
+
+              {/* 下拉菜单-月份列 */}
               <div className="col">
               {
                   monthRange.map(monthNum => (
                     <a 
                       key={monthNum}
-                      className="dropdown-item"  
+                      href="#"
+                      className={activeToggleItem(monthNum, month)}
                     >
                       {padMonth(monthNum)} 月
                     </a>

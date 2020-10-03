@@ -34,3 +34,14 @@ export const yearNearby = (year, offset=4) => {
   return range((2 * offset) + 1, -offset)
           .map(n => year + n);
 }
+
+/**
+ * 根据输入和期望值，返回高亮class名/默认class名
+ * @param {any} input 
+ * @param {any} expect 
+ * @param {string} activeCls 
+ * @param {string} defaultCls 
+ */
+export const toggleClass = (input, expect, activeCls, defaultCls) => {
+  return input === expect ? activeCls : defaultCls;
+};
