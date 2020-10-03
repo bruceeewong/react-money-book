@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ViewTab from './components/ViewTab';
+import TotalPrice from './components/TotalPrice';
 // import PriceList from './components/PriceList';
 
 // const items = [
@@ -41,7 +42,12 @@ function App() {
       <ViewTab 
         activeTab="list"
         onTabChange={(view) => alert(view)}  
-      ></ViewTab>
+      />
+
+      <TotalPrice
+        income={17000}
+        outcome={10000}
+      ></TotalPrice>
 
       {/* <PriceList
         items={items}
