@@ -15,7 +15,7 @@ import {
   padMonth,
 } from '../utility';
 
-const categories = {
+export const categories = {
   "1": {
     "id": 1,
     "name": "工资",
@@ -32,7 +32,7 @@ const categories = {
 
 
 // FIXME: 测试数据
-const items = [
+export const items = [
   {
     "id": 1,
     "title": "工资",
