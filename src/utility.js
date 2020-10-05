@@ -1,5 +1,7 @@
 export const LIST_VIEW = 'list';
 export const CHART_VIEW = 'chart';
+export const TYPE_OUTCOME = 'outcome';
+export const TYPE_INCOME = 'income';
 
 /**
  * 月份补全
@@ -44,4 +46,16 @@ export const yearNearby = (year, offset=4) => {
  */
 export const toggleClass = (input, expect, activeCls, defaultCls) => {
   return input === expect ? activeCls : defaultCls;
+};
+
+/**
+ * 将日期字符解析为年月字段, 不传则获取当前年月
+ * @param {string} str 
+ */
+export const parseToYearAndMonth = (str) => {
+  const date = typeof str === 'string' ? new Date(str) : new Date();
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+  };
 };
