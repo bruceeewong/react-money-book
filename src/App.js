@@ -43,6 +43,7 @@ function App() {
       <MonthPicker
         year={2020}
         month={1}
+        onChange={(year, month) => {console.log(year, month)}}
       >
       </MonthPicker>
 
