@@ -52,11 +52,15 @@ class MonthPicker extends React.Component {
     const yearRange = yearNearby(year, 4);
 
     return (
-      <div className="dropdown month-picker">
+      <div 
+        className="dropdown"
+        style={{display: 'inline-block'}}
+      >
         {/* 下拉按钮部分 */} 
-        <p>选择月份</p>
+        {/* <p>选择月份</p> */}
         <button 
           className="btn btn-lg btn-secondary dropdown-toggle"
+          data-toggle="dropdown"
           onClick={this.toggleDropdown}  
         >
           {`${selectedYear}年 ${padMonth(selectedMonth)}月`}
@@ -66,12 +70,13 @@ class MonthPicker extends React.Component {
         { isOpen && 
           <div 
             className="dropdown-menu"
-            style={{ display: 'block' }}
+            style={{ display: 'block', width: '250px' }}
           >
             <div className="row">
               {/* 下拉菜单-年份列 */}
               <div className="col border-right">
-                { yearRange.map(yearNum => (
+                { 
+                  yearRange.map(yearNum => (
                     <a 
                       key={yearNum}
                       href="#"
@@ -85,12 +90,13 @@ class MonthPicker extends React.Component {
                     >
                       {yearNum} 年
                     </a>
-                  )) }
+                  )) 
+                }
               </div>
-
               {/* 下拉菜单-月份列 */}
               <div className="col">
-              { monthRange.map(monthNum => (
+                { 
+                  monthRange.map(monthNum => (
                     <a 
                       key={monthNum}
                       href="#"
@@ -104,7 +110,8 @@ class MonthPicker extends React.Component {
                     >
                       {padMonth(monthNum)} 月
                     </a>
-                  )) }
+                  )) 
+                }
               </div>
             </div>
           </div>

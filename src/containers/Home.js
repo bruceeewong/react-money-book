@@ -7,7 +7,13 @@ import ViewTab from '../components/ViewTab';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
-import {LIST_VIEW, CHART_VIEW, TYPE_OUTCOME, parseToYearAndMonth} from '../utility';
+import {
+  LIST_VIEW,
+  CHART_VIEW,
+  TYPE_OUTCOME,
+  parseToYearAndMonth,
+  padMonth,
+} from '../utility';
 
 const categories = {
   "1": {
@@ -24,22 +30,36 @@ const categories = {
   },
 }
 
+
+// FIXME: 测试数据
 const items = [
   {
     "id": 1,
     "title": "工资",
     "price": 12000,
-    "date": "2018-09-10",
+    "date": "2020-10-10",
     "cid": 1,
   },
   {
     "id": 2,
     "title": "去云南旅游",
     "price": 200,
-    "date": "2018-09-10",
+    "date": "2020-10-20",
     "cid": 2,
   },
 ];
+
+let itemId = 2;
+const getNewItem = () => {
+  ++itemId
+  return {
+    "id": itemId,
+    "title": "工资",
+    "price": 12000,
+    "date": "2020-11-10",
+    "cid": 1,
+  };
+}
 
 class Home extends React.Component {
   constructor(props) {
@@ -51,12 +71,51 @@ class Home extends React.Component {
     };
   }
 
+  changeView = (view) => { this.setState({tabView: view}); }
+  
+  changeDate = (year, month) => {
+    this.setState({
+      currentDate: {
+        year,
+        month,
+      },
+    });
+  }
+  
+  createItem = () => {
+    this.setState({
+      items: [getNewItem(), ...this.state.items],
+    });
+  }
+  
+  modifyItem = (modifiedItem) => {
+    const modifiedItems = this.state.items.map(item => {
+      if (item.id !== modifiedItem.id) return item;
+      return {
+        ...item,
+        title: '更新后的标题',
+      };
+    });
+    this.setState({
+      items: modifiedItems,
+    });
+  }
+
+  deleteItem = (deletedItem) => {
+    const filteredItems = this.state.items.filter(item => item.id !== deletedItem.id);
+    this.setState({
+      items: filteredItems,
+    });
+  }
+
   render() {
     const {items, currentDate, tabView} = this.state;
     const itemsWithCategory = items.map(item => {
       const cpItem = {...item};
       cpItem.category = categories[cpItem.cid];
       return cpItem;
+    }).filter(item => {
+      return item.date.includes(`${currentDate.year}-${padMonth(currentDate.month)}`);
     });
     let totalIncome = 0, totalOutcome = 0;
     itemsWithCategory.forEach(item => {
@@ -65,43 +124,46 @@ class Home extends React.Component {
       } else {
         totalIncome += item.price;
       }
-    })
+    });
 
     return (
-    <React.Fragment>
-      <header className="App-header">
-        <div className="row mb-5">
-          <img src={logo} className="App-logo" alt="logo"></img>
-        </div>
-        <div className="row w-100">
-          <div className="col">
-            <MonthPicker
-              year={currentDate.year}
-              month={currentDate.month}
-              onChange={(year, month) => {console.log(year, month)}}
-            />
+      <React.Fragment>
+        <header className="App-header">
+          <div className="row my-4">
+            <img src={logo} className="App-logo" alt="logo" />
           </div>
-          <div className="col">
-            <TotalPrice
-              income={totalIncome}
-              outcome={totalOutcome}
-            />
+          <div className="row w-100">
+            <div className="col">
+              <MonthPicker
+                year={currentDate.year}
+                month={currentDate.month}
+                onChange={this.changeDate}
+              />
+            </div>
+            <div className="col">
+              <TotalPrice
+                income={totalIncome}
+                outcome={totalOutcome}
+              />
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="container-area py-3 px-3">
-        <ViewTab 
-          activeTab={tabView}
-          onTabChange={(view) => {}}  
-        />
-        <CreateBtn onClick={() => {}} />
-        <PriceList
-          items={itemsWithCategory}
-          onModifyItem={(item) => alert(item.id)}
-          onDeleteItem={(item) => alert(item.id)}
-        />
-      </div>
+        <div className="container-area py-3 px-3">
+          <ViewTab 
+            activeTab={tabView}
+            onTabChange={this.changeView}  
+          />
+          <CreateBtn onClick={this.createItem} />
+          { tabView === LIST_VIEW &&
+            <PriceList
+              items={itemsWithCategory}
+              onModifyItem={this.modifyItem}
+              onDeleteItem={this.deleteItem}
+            /> }
+          { tabView === CHART_VIEW &&
+            <h1>这里是图表区</h1> }
+        </div>
       </React.Fragment>
     );
   };

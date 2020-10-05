@@ -4,13 +4,16 @@ import Ionicon from 'react-ionicons';
 
 function CreateBtn({text, onClick}) {
   return (
-    <button className="btn btn-primary btn-block 
-      d-flex justify-content-center align-items-center">
+    <button 
+      className="btn btn-primary btn-block 
+        d-flex justify-content-center align-items-center"
+      onClick={(e) => onClick(e)}
+    >
       <Ionicon 
         icon="ios-add-circle"
         color="#fff"
         fontSize="30px"
-      ></Ionicon>
+      />
       <span>{text}</span>
     </button>
   );
