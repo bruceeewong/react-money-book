@@ -6,6 +6,7 @@ import PriceList from '../components/PriceList';
 import ViewTab from '../components/ViewTab';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
+import CreateBtn from '../components/CreateBtn';
 import {LIST_VIEW, CHART_VIEW} from '../utility';
 
 
@@ -61,17 +62,18 @@ class Home extends React.Component {
         </div>
       </header>
 
+      <div className="container-area py-3 px-3">
         <ViewTab 
           activeTab={LIST_VIEW}
           onTabChange={(view) => alert(view)}  
         />
-        
+        <CreateBtn onClick={() => {}} />
         <PriceList
           items={items}
           onModifyItem={(item) => alert(item.id)}
           onDeleteItem={(item) => alert(item.id)}
         />
-
+      </div>
       </React.Fragment>
     );
   };
