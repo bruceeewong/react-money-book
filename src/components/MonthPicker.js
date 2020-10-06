@@ -18,6 +18,26 @@ class MonthPicker extends React.Component {
     };
   }
 
+  componentDidMount() {
+    // 添加点击选择框之外也能关闭框的事件
+    document.addEventListener('click', this.handleClick, false);
+  }
+  componentWillUnmount() {
+    // 卸载事件
+    document.addEventListener('click', this.handleClick, false);
+  }
+
+  handleClick = (e) => {
+    // 点击dropdown相关的dom不会关闭选择面板
+    if (this.node.contains(e.target)) {
+      return;
+    }
+
+    this.setState({
+      isOpen: false,
+    });
+  }
+
   // 切换下拉菜单显示
   toggleDropdown = (event) => {
     event.preventDefault();
@@ -53,7 +73,8 @@ class MonthPicker extends React.Component {
 
     return (
       <div 
-        className="dropdown"
+        ref={(ref) => {this.node = ref}}
+        className="dropdown month-picker"
         style={{display: 'inline-block'}}
       >
         {/* 下拉按钮部分 */} 
@@ -74,7 +95,7 @@ class MonthPicker extends React.Component {
           >
             <div className="row">
               {/* 下拉菜单-年份列 */}
-              <div className="col border-right">
+              <div className="col border-right years-range">
                 { 
                   yearRange.map(yearNum => (
                     <a 
@@ -94,7 +115,7 @@ class MonthPicker extends React.Component {
                 }
               </div>
               {/* 下拉菜单-月份列 */}
-              <div className="col">
+              <div className="col months-range">
                 { 
                   monthRange.map(monthNum => (
                     <a 
