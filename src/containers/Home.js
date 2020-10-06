@@ -56,7 +56,7 @@ const getNewItem = () => {
     "id": itemId,
     "title": "工资",
     "price": 12000,
-    "date": "2020-11-10",
+    "date": "2020-09-10",
     "cid": 1,
   };
 }
@@ -66,7 +66,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       items,
-      currentDate: parseToYearAndMonth(),
+      currentDate: parseToYearAndMonth('2020/09/01'),
       tabView: LIST_VIEW,
     };
   }
@@ -162,7 +162,7 @@ class Home extends React.Component {
               onDeleteItem={this.deleteItem}
             /> }
           { tabView === CHART_VIEW &&
-            <h1>这里是图表区</h1> }
+            <h1 className="chart-title">这里是图表区</h1> }
         </div>
       </React.Fragment>
     );
