@@ -29,7 +29,7 @@ class MonthPicker extends React.Component {
 
   handleClick = (e) => {
     // 点击dropdown相关的dom不会关闭选择面板
-    if (this.node.contains(e.target)) {
+    if (!this.node || this.node.contains(e.target)) {
       return;
     }
 
