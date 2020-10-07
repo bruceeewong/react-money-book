@@ -7,14 +7,44 @@ import { TYPE_INCOME, TYPE_OUTCOME } from '../utility';
 import withContext from '../WithContext';
 
 const typeList = [TYPE_OUTCOME, TYPE_INCOME];
+const getTypeIndex = (type) => typeList.findIndex(t => t === type);
 
 class Create extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeTabIndex: 0,
-      selectedCategory: null,
+    
+    let selectedCategory = null;
+    let activeTabIndex = 0;
+
+    const { id } = this.props.match.params;
+    if (id) {
+      selectedCategory = this.getCategoryByItemId(id);
+      if (selectedCategory) {
+        activeTabIndex = getTypeIndex(selectedCategory.type);
+      }
     }
+      
+    this.state = {
+      activeTabIndex,
+      selectedCategory,
+    }
+  }
+
+  getItemById = (id) => {
+    const { data: contextData } = this.props;
+    if (!id || !contextData.items[id]) {
+      return null;
+    }
+    return contextData.items[id];
+  }
+
+  getCategoryByItemId = (id) => {
+    const { data: contextData } = this.props;
+    let item = this.getItemById(id);
+    if (!item || item.cid === undefined) {
+      return null;
+    }
+    return contextData.categories[item.cid];
   }
 
   selectType = (index) => {
@@ -33,6 +63,7 @@ class Create extends React.Component {
       this.props.actions.createItem(data, this.state.selectedCategory.id);
     } else {
       // update
+      this.props.actions.updateItem(data, this.state.selectedCategory.id);
     }
     this.props.history.push('/');
   }
@@ -45,7 +76,10 @@ class Create extends React.Component {
 
   render() {
     const { data: contextData } = this.props;
-    const {activeTabIndex} = this.state;
+    const { activeTabIndex, selectedCategory } = this.state;
+    const { id } = this.props.match.params;
+    const editItem = (id && contextData.items[id]) ? contextData.items[id] : {};
+
     const filteredCategories = Object.values(contextData.categories)
       .filter(c => c.type === typeList[activeTabIndex]);
 
@@ -63,11 +97,12 @@ class Create extends React.Component {
 
           <CategorySelect
             categories={filteredCategories}
-            selectedCategory={this.selectedCategory}
+            selectedCategory={selectedCategory}
             onSelectCategory={this.selectCategory}
           />
 
           <PriceForm
+            form={editItem}
             onFormSubmit={this.submitForm}
             onFormCancel={this.cancelSubmit}
           ></PriceForm>

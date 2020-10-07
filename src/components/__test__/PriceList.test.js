@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import PriceList from '../PriceList';
-import {items, categories} from '../../containers/Home';
+import {items, categories} from '../../testData';
 import IonIcon from 'react-ionicons';
 
 const itemsWithCategory = items.map(item => {
   const cpItem = {...item};
-  cpItem.category = categories[cpItem.cid];
+  cpItem.category = categories.findIndex(c => c.id === cpItem.cid);
   return cpItem;
 });
 

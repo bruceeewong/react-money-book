@@ -34,11 +34,7 @@ class PriceForm extends React.Component {
     if (typeof form !== 'object') {
       return defaultForm;
     }
-    let initialForm = {};
-    Object.keys(defaultForm).forEach(key => {
-      initialForm[key] = form[key];
-    });
-    return initialForm;
+    return form;
   }
 
   submitForm = (e) => {
@@ -94,7 +90,7 @@ class PriceForm extends React.Component {
     if (type === 'number') {
       value = parseInt(value);
     }
-    
+
     this.setState({
       form: {
         ...this.state.form,

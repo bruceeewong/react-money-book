@@ -3,7 +3,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './containers/Home';
 import Create from './containers/Create';
 import {categories, items} from './testData';
-import { flattenArr, createID, parseToYearAndMonth } from './utility';
+import { 
+  flattenArr, 
+  createID, 
+  parseToYearAndMonth, 
+  createTimestamp,
+} from './utility';
 
 export const AppContext = React.createContext();
 class App extends React.Component {
@@ -20,15 +25,15 @@ class App extends React.Component {
           items: this.state.items,
         });
       },
-      createItem: (item, cid) => {
+      createItem: (item, categoryId) => {
         const newID = createID();
         const parseDate = parseToYearAndMonth(item.date);
         const newItem = {
           ...item,
-          cid,
+          cid: categoryId,
           id: newID,
           monthCategory: `${parseDate.year}-${parseDate.month}`,
-          timestamp: new Date(item.date).getTime(),
+          timestamp: createTimestamp(item.date),
         };
         this.setState({
           items: {
@@ -36,6 +41,20 @@ class App extends React.Component {
             [newID]: newItem,
           }
         });
+      },
+      updateItem: (item, updatedCategoryId) => {
+        const modifiedItem = {
+          ...item,
+          cid: updatedCategoryId,
+          timestamp: createTimestamp(item.date),
+        };
+
+        this.setState({
+          items: {
+            ...this.state.items,
+            [modifiedItem.id]: modifiedItem,
+          }
+        })
       }
     }
   }

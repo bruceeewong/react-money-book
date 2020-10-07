@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {Router} from 'react-router-dom';
 import { mount } from 'enzyme';
 import Home from '../Home';
 
@@ -45,7 +45,7 @@ describe('tets Home container component', () => {
     expect(wrapper.find(PriceList).props().items.length).toEqual(2);
   });
 
-  it('should add new item after click the create btn', () => {
+  it('should switch to create page after click the create btn', () => {
     expect(wrapper.find(PriceList).props().items.length).toEqual(0);
     wrapper.find(CreateBtn).simulate('click');
     expect(location.pathname).toEqual('/create');

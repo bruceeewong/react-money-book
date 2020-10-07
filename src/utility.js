@@ -77,3 +77,11 @@ export const flattenArr = (arr) => {
 export const createID = () => {
   return '_' + Math.random().toString(36).substr(2, 9);
 }
+
+/**
+ * 生成timestamp
+ * @param {string} date 
+ */
+export const createTimestamp = (date) => {
+  return new Date(date).getTime();
+}
