@@ -99,15 +99,6 @@
   ],
   "items": [
     {
-      "title": "再次更新标题",
-      "price": 2000,
-      "date": "2018-09-15",
-      "monthCategory": "2018-9",
-      "id": "_qmatbbwq0",
-      "cid": "6",
-      "timestamp": 1536969600000
-    },
-    {
       "title": "新的吃饭",
       "price": 2000,
       "date": "2018-11-15",
@@ -214,6 +205,15 @@
       "timestamp": 1546646400000,
       "id": "_cg4a9gzya",
       "cid": "1"
+    },
+    {
+      "title": "再次更新标题2",
+      "price": 666,
+      "date": "2018-09-15",
+      "monthCategory": "2018-9",
+      "id": "_qmatbbwq0",
+      "cid": "6",
+      "timestamp": 1536969600000
     }
   ]
 }
