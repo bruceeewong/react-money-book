@@ -9,6 +9,7 @@ import {Tabs, Tab} from '../components/Tabs';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
+import Loader from '../components/Loader';
 
 import {
   LIST_VIEW,
@@ -24,9 +25,12 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentDate: parseToYearAndMonth(),
       activeTabIndex: 0,
     };
+  }
+
+  componentDidMount() {
+    this.props.actions.getInitData();
   }
 
   changeView = (index) => {
@@ -36,12 +40,7 @@ class Home extends React.Component {
   }
   
   changeDate = (year, month) => {
-    this.setState({
-      currentDate: {
-        year,
-        month,
-      },
-    });
+    this.props.actions.selectNewMonth(year, month);
   }
   
   createItem = () => {
@@ -57,22 +56,22 @@ class Home extends React.Component {
   }
 
   render() {
-    const { data: contextData } = this.props;
-
     const {
-      currentDate,
       activeTabIndex,
     } = this.state;
     const tabView = tabText[activeTabIndex];
+
+    const { data: contextData } = this.props;
+    const {
+      currentDate,
+      isLoading,
+    } = contextData;
 
     const itemsWithCategory = Object.values(contextData.items)
       .map(item => {
         const cpItem = {...item};
         cpItem.category = contextData.categories[cpItem.cid];
         return cpItem;
-      })
-      .filter(item => {
-        return item.date.includes(`${currentDate.year}-${padMonth(currentDate.month)}`);
       });
 
     let totalIncome = 0, totalOutcome = 0;
@@ -103,41 +102,53 @@ class Home extends React.Component {
             </div>
           </div>
         </Header>
-
         <div className="container-area py-3 px-3">
-          <Tabs 
-            activeIndex={activeTabIndex} 
-            onTabChange={this.changeView}
-          >
-            <Tab>
-              <Ionicon
-                className="rounded-circle mr-2"
-                fontSize="25px"
-                color="#007bff"
-                icon="ios-paper"
-              />
-              列表模式
-            </Tab>
-            <Tab>
-              <Ionicon
-                className="rounded-circle mr-2"
-                fontSize="25px"
-                color="#007bff"
-                icon="ios-pie"
-              />
-              图表模式
-            </Tab>
-          </Tabs>
+          {
+            isLoading && 
+            <Loader />
+          }
+          {
+            !isLoading &&
+            <>
+              <Tabs 
+                activeIndex={activeTabIndex} 
+                onTabChange={this.changeView}
+              >
+                <Tab>
+                  <Ionicon
+                    className="rounded-circle mr-2"
+                    fontSize="25px"
+                    color="#007bff"
+                    icon="ios-paper"
+                  />
+                  列表模式
+                </Tab>
+                <Tab>
+                  <Ionicon
+                    className="rounded-circle mr-2"
+                    fontSize="25px"
+                    color="#007bff"
+                    icon="ios-pie"
+                  />
+                  图表模式
+                </Tab>
+              </Tabs>
 
-          <CreateBtn onClick={this.createItem} />
-          { tabView === LIST_VIEW &&
-            <PriceList
-              items={itemsWithCategory}
-              onModifyItem={this.modifyItem}
-              onDeleteItem={this.deleteItem}
-            /> }
-          { tabView === CHART_VIEW &&
-            <h1 className="chart-title">这里是图表区</h1> }
+              <CreateBtn onClick={this.createItem} />
+              { 
+                tabView === LIST_VIEW &&
+                <PriceList
+                  items={itemsWithCategory}
+                  onModifyItem={this.modifyItem}
+                  onDeleteItem={this.deleteItem}
+                /> 
+              }
+              { 
+                tabView === CHART_VIEW &&
+                <h1 className="chart-title">这里是图表区</h1> 
+              }
+            </>
+          }
         </div>
       </React.Fragment>
     );
