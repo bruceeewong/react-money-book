@@ -8,6 +8,7 @@ import {Tabs, Tab} from '../components/Tabs';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
+import {categories, items} from '../testData';
 
 import {
   LIST_VIEW,
@@ -16,40 +17,6 @@ import {
   parseToYearAndMonth,
   padMonth,
 } from '../utility';
-
-export const categories = {
-  "1": {
-    "id": 1,
-    "name": "工资",
-    "type": "income",
-    "iconName": "ios-plane",
-  },
-  "2": {
-    "id": 1,
-    "name": "旅行",
-    "type": "outcome",
-    "iconName": "ios-plane",
-  },
-}
-
-
-// FIXME: 测试数据
-export const items = [
-  {
-    "id": 1,
-    "title": "工资",
-    "price": 12000,
-    "date": "2020-10-10",
-    "cid": 1,
-  },
-  {
-    "id": 2,
-    "title": "去云南旅游",
-    "price": 200,
-    "date": "2020-10-20",
-    "cid": 2,
-  },
-];
 
 const tabText = [LIST_VIEW, CHART_VIEW];
 
@@ -113,12 +80,13 @@ class Home extends React.Component {
 
     const itemsWithCategory = items.map(item => {
       const cpItem = {...item};
-      cpItem.category = categories[cpItem.cid];
+      cpItem.category = categories.find(c => c.id === cpItem.cid);
       return cpItem;
     }).filter(item => {
       return item.date.includes(`${currentDate.year}-${padMonth(currentDate.month)}`);
     });
     let totalIncome = 0, totalOutcome = 0;
+
     itemsWithCategory.forEach(item => {
       if (item.category.type === TYPE_OUTCOME) {
         totalOutcome += item.price;

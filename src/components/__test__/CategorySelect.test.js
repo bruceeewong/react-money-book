@@ -2,27 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import CategorySelect from '../CategorySelect';
 import Ionicon from 'react-ionicons';
-
-export const categories = [
-  {
-    "id": 1,
-    "name": "旅行",
-    "type": "outcome",
-    "iconName": "ios-plane",
-  },
-  {
-    "id": 2,
-    "name": "理财",
-    "type": "income",
-    "iconName": "logo-yen",
-  },
-  {
-    "id": 3,
-    "name": "理财",
-    "type": "income",
-    "iconName": "logo-yen",
-  },
-];
+import {categories} from '../../testData';
 
 let props = {
   categories,

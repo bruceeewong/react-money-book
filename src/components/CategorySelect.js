@@ -2,6 +2,24 @@ import React from 'react';
 import Ionicon from 'react-ionicons';
 import PropTypes from 'prop-types';
 
+const getCategoryClass = (selectedId, id) => {
+  return selectedId === id 
+    ? 'category-item col-3 text-center active' 
+    : 'category-item col-3 text-center';
+};
+
+const getCategoryIconColor = (selectedId, id) => {
+  return selectedId === id 
+    ? '#fff' 
+    : '#555';
+};
+
+const getCategoryBackColor = (selectedId, id) => {
+  return selectedId === id 
+    ? '#347eff' 
+    : '#efefef';
+};
+
 class CategorySelect extends React.Component {
   constructor(props) {
     super(props);
@@ -28,21 +46,24 @@ class CategorySelect extends React.Component {
         <div className="row">
           {
             categories.map((category, index) => {
-              const activeClassName = (selectedCategoryId === category.id) ? 
-                'category-item col-3 active' : 'category-item col-3';
+              const categoryClass = getCategoryClass(selectedCategoryId, category.id);
+              const iconColor = getCategoryIconColor(selectedCategoryId, category.id);
+              const backColor = getCategoryBackColor(selectedCategoryId, category.id);
 
               return (
                 <div 
                   key={category.id}
-                  className={activeClassName}
+                  className={categoryClass}
                   onClick={(e) => { this.selectCategory(e, category) }}
                 >
                   <Ionicon
-                    className="rounded-circle"
+                    className="rounded-circle p-2"
+                    style={{backgroundColor: backColor }}
                     icon={category.iconName}
                     fontSize="50px"
-                    color="#555"
+                    color={iconColor}
                   />
+                  <p>{category.name}</p>
                 </div>
               );
             })

@@ -129,14 +129,19 @@ class PriceForm extends React.Component {
           </div>
           <div className="form-group">
             <label htmlFor="form-price">金额 *</label>
-            <input 
-              id="form-price" 
-              name="price" 
-              className="form-control"
-              value={form.price} 
-              type="number" 
-              onChange={this.onChange}
-            />
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">¥</span>
+              </div>
+              <input 
+                id="form-price" 
+                name="price" 
+                className="form-control"
+                value={form.price} 
+                type="number" 
+                onChange={this.onChange}
+              />
+            </div>
           </div>
           <div className="form-group">
             <label htmlFor="form-date">日期 *</label>
