@@ -3,8 +3,16 @@
 import React from 'react';
 import Ionicon from 'react-ionicons';
 import PropTypes from 'prop-types';
+import {isArrayEmpty} from '../utility';
 
 const PriceList = ({items, onModifyItem, onDeleteItem}) => {
+  if (isArrayEmpty(items)) {
+    return (
+      <p className="placeholder text-center text-secondary my-3">
+        您还没有任何记账记录
+      </p>
+    );
+  }
   return (
     <ul className="list-group list-group-flush">
       {

@@ -47,4 +47,15 @@ describe('test PriceList component', () => {
     firstItem.find('a').last().simulate('click');
     expect(props.onModifyItem).toHaveBeenCalledWith(itemsWithCategory[0]);
   });
+
+  it('should show placeholder text if no items', () => {
+    const propsWithNoItems = {
+      items: [],
+      onModifyItem: jest.fn(),
+      onDeleteItem: jest.fn(),
+    }
+    let wrapper2 = shallow(<PriceList {...propsWithNoItems} />);
+
+    expect(wrapper2.find('.placeholder').length).toEqual(1);
+  })
 });

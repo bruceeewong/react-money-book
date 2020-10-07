@@ -85,3 +85,10 @@ export const createID = () => {
 export const createTimestamp = (date) => {
   return new Date(date).getTime();
 }
+
+export const isArrayEmpty = (arr) => {
+  if (!Array.isArray) {
+    throw new TypeError('param should be array type');
+  }
+  return arr.length === 0;
+}
