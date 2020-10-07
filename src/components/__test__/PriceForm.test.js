@@ -7,22 +7,43 @@ const props = {
   onFormCancel: jest.fn(),
 };
 
-// const propsWithItem = {
-//   item: testItems[0],
-//   onFormSubmit: jest.fn(),
-//   onFormCancel: jest.fn(),
-// };
+const fakeForm = {
+  title: '购物',
+  price: '100',
+  date: '2020-10-07',
+};
+
+const expectFormNotPass = (wrapper) => {
+  expect(wrapper.find('.alert').length).toEqual(1);
+  expect(props.onFormSubmit).not.toHaveBeenCalled();
+}
+
+const fakeEvent = (name, value) => ({
+  target: { 
+    name, 
+    value,
+  },
+});
+
+const propsWithForm = {
+  form: fakeForm,
+  onFormSubmit: jest.fn(),
+  onFormCancel: jest.fn(),
+};
 
 let wrapper = null;
+let wrapperWithForm = null;
 
 describe('test rendering', () => {
   beforeEach(() => {
     wrapper = mount(<PriceForm {...props} />);
+    wrapperWithForm = mount(<PriceForm {...propsWithForm} />);
   });
 
-  // it('should match snapshot', () => {
-  //   expect(wrapper).toMatchSnapshot();
-  // });
+  it('should match snapshot', () => {
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapperWithForm).toMatchSnapshot();
+  });
 
   it('should render 3 input and 1 form', () => {
     expect(wrapper.find('input').length).toEqual(3);
@@ -37,27 +58,19 @@ describe('test control default value', () => {
       const ins = input.instance();
       let val = ins.value;
       if (ins.name === 'price') {
-        expect(input.instance().value).toEqual("0");
+        expect(val).toEqual("0");
       } else {
-        expect(input.instance().value).toEqual('');
+        expect(val).toEqual('');
       }
     });
-  })
+  });
+
+  it('should display props value if props form is given', () => {
+    expect(wrapperWithForm.find('#form-title').instance().value).toEqual(fakeForm.title);
+    expect(wrapperWithForm.find('#form-price').instance().value).toEqual(fakeForm.price);
+    expect(wrapperWithForm.find('#form-date').instance().value).toEqual(fakeForm.date);
+  });
 });
-
-const expectFormNotPass = (wrapper) => {
-  expect(wrapper.find('.alert').length).toEqual(1);
-  expect(props.onFormSubmit).not.toHaveBeenCalled();
-}
-
-const fakeEvent = (name, value) => {
-  return {
-    target: {
-      name,
-      value,
-    },
-  };
-};
 
 describe('test form validation', () => {
   it('should stop submit and alert if submit empty form', () => {
@@ -85,14 +98,13 @@ describe('test form validation', () => {
     });
   });
 
-  // it('should submit with payload and no alert if values are valid', () => {
-  //   wrapper.find('#form-title').simulate('input', val);
-  //   wrapper.find('#form-price').simulate('input', val);
-  //   wrapper.find('#form-date').simulate('input', val);
+  it('should submit with payload and no alert if values are valid', () => {
+    wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
+    wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
+    wrapper.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
 
-  //   invalidValues.forEach(val => {
-  //     wrapper.find('#form-price').simulate('input', val);
-  //     expectFormNotPass(wrapper);
-  //   });
-  // });
+    wrapper.find('form').simulate('submit');
+    
+    expect(props.onFormSubmit).toHaveBeenCalledWith(fakeForm);
+  });
 });

@@ -1,48 +1,63 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const defaultForm = {
+  title: '',
+  price: 0,
+  date: '',
+};
+
 class PriceForm extends React.Component {
   constructor(props) {
     super(props);
+    const initForm = this.processForm(this.props.form);
+
     this.state = {
       isInit: true,
       validatePass: false,
       alertMsg: '',
-      form: {
-        title: '',
-        price: 0,
-        date: '',
-      },
+      form: { ...initForm },
     };
-  } 
+  }
+
+  processForm = (form) => {
+    if (typeof form !== 'object') {
+      return defaultForm;
+    }
+    let initialForm = {};
+    Object.keys(defaultForm).forEach(key => {
+      initialForm[key] = form[key];
+    });
+    return initialForm;
+  }
 
   submitForm = (e) => {
-    console.log(this.state.form);
-
     if (this.state.isInit) {
       this.setState({
         isInit: false,
       });
     }
 
+    let validatePass, alertMsg;
     this.validateForm(this.state.form, (result, msg) => {
-      this.setState({
-        validatePass: result,
-        alertMsg: msg,
-      });
+      validatePass = result;
+      alertMsg = msg;
+    });
+    
+    this.setState({
+      validatePass,
+      alertMsg,
     });
 
-    if (!this.state.validatePass) {
-      return;
-    }
+    if (!validatePass) return;
     
-    return;
+    this.props.onFormSubmit(this.state.form);
   }
 
   validateForm = (form, cb) => {
-    let dateReg = /^\d{4}\/\d{2}\/\d{2}$/;
+    let dateReg = /^\d{4}-\d{2}-\d{2}$/;
 
-    let message = '表单校验通过';
+    let message = '';
     if (parseInt(form.price) <= 0) {
       message = '价格必须大于0';
       cb(false, message);
@@ -53,6 +68,7 @@ class PriceForm extends React.Component {
       message = '日期格式应为 YYYY/mm/dd';
       cb(false, message);
     } else {
+      message = '表单校验通过';
       cb(true, message);
     }
   }
@@ -93,7 +109,7 @@ class PriceForm extends React.Component {
 }
 
 PriceForm.propTypes = {
-  items: PropTypes.array,
+  form: PropTypes.object,
   onFormSubmit: PropTypes.func,
   onFormCancel: PropTypes.func,
 };
