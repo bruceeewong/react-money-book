@@ -42,6 +42,8 @@ class PriceForm extends React.Component {
   }
 
   submitForm = (e) => {
+    e.preventDefault();
+
     if (this.state.isInit) {
       this.setState({
         isInit: false,
@@ -68,7 +70,10 @@ class PriceForm extends React.Component {
     let dateReg = /^\d{4}-\d{2}-\d{2}$/;
 
     let message = '';
-    if (parseInt(form.price) <= 0) {
+    if (!form.title || form.title.trim() === '') {
+      message = '标题不能为空';
+      cb(false, message);
+    } else if (parseInt(form.price) <= 0) {
       message = '价格必须大于0';
       cb(false, message);
     } else if (!form.date) {
@@ -110,13 +115,43 @@ class PriceForm extends React.Component {
           !validatePass &&
           <div className="alert alert-danger">{alertMsg}</div>
         }
-        <form onSubmit={(e) => { this.submitForm(e) }}>
-          <input id="form-title" name="title" value={form.title} onChange={this.onChange} />
-          <input id="form-price" name="price" value={form.price} type="number" onChange={this.onChange} />
-          <input id="form-date" name="date" value={form.date} type="date" onChange={this.onChange} />
+
+        <form onSubmit={this.submitForm}>
+          <div className="form-group">
+            <label htmlFor="form-title">日期 *</label>
+            <input 
+              id="form-title" 
+              name="title" 
+              className="form-control"
+              value={form.title} 
+              onChange={this.onChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="form-price">金额 *</label>
+            <input 
+              id="form-price" 
+              name="price" 
+              className="form-control"
+              value={form.price} 
+              type="number" 
+              onChange={this.onChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="form-date">日期 *</label>
+            <input 
+              id="form-date" 
+              name="date" 
+              className="form-control"
+              value={form.date} 
+              type="date" 
+              onChange={this.onChange}
+            />
+          </div>
           
-          <button type="submit" className="submit-btn ">提交</button>
-          <button className="cancel-btn" onClick={onFormCancel}>取消</button>
+          <button type="submit" className="btn btn-primary submit-btn mr-3">提交</button>
+          <button className="btn btn-secondary cancel-btn" onClick={onFormCancel}>取消</button>
         </form>
       </section>
     );

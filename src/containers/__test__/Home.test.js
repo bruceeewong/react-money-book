@@ -1,4 +1,5 @@
 import React from 'react';
+import {BrowserRouter as Router} from 'react-router-dom';
 import { mount } from 'enzyme';
 import Home from '../Home';
 
@@ -19,7 +20,7 @@ let currentDate = parseToYearAndMonth('2020/09/01');
 
 describe('tets Home container component', () => {
   beforeEach(() => {
-    wrapper = mount(<Home />);
+    wrapper = mount(<Router><Home /></Router>);
   });
 
   it('should render the default layout', () => {
@@ -47,6 +48,6 @@ describe('tets Home container component', () => {
   it('should add new item after click the create btn', () => {
     expect(wrapper.find(PriceList).props().items.length).toEqual(0);
     wrapper.find(CreateBtn).simulate('click');
-    expect(wrapper.find(PriceList).props().items.length).toEqual(1);
+    expect(location.pathname).toEqual('/create');
   })
 });

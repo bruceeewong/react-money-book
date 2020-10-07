@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import Header from '../components/Header';
 import PriceList from '../components/PriceList';
@@ -49,18 +50,6 @@ export const items = [
   },
 ];
 
-let itemId = 2;
-const getNewItem = () => {
-  ++itemId
-  return {
-    "id": itemId,
-    "title": "工资",
-    "price": 12000,
-    "date": "2020-09-10",
-    "cid": 1,
-  };
-}
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -83,9 +72,7 @@ class Home extends React.Component {
   }
   
   createItem = () => {
-    this.setState({
-      items: [getNewItem(), ...this.state.items],
-    });
+    this.props.history.push('/create');
   }
   
   modifyItem = (modifiedItem) => {
@@ -166,4 +153,4 @@ class Home extends React.Component {
   };
 }
 
-export default Home;
+export default withRouter(Home);

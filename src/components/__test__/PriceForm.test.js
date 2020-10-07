@@ -78,7 +78,23 @@ describe('test form validation', () => {
     expectFormNotPass(wrapper);
   });
 
+  it('should stop submit and alert if submit invalid title', () => {
+    wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
+    wrapper.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
+
+    let invalidValues = [''];
+    invalidValues.forEach(val => {
+      wrapper.find('#form-title').simulate('change', fakeEvent('title', val));
+      wrapper.find('form').simulate('submit');
+      expectFormNotPass(wrapper);
+      expect(wrapper.find('.alert').text()).toEqual('标题不能为空');
+    });
+  });
+
   it('should stop submit and alert if submit invalid price', () => {
+    wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
+    wrapper.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
+
     let invalidValues = [-1, 0];
     invalidValues.forEach(val => {
       wrapper.find('#form-price').simulate('change', fakeEvent('price', val));
@@ -89,6 +105,9 @@ describe('test form validation', () => {
   });
 
   it('should stop submit and alert if submit invalid date', () => {
+    wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
+    wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
+
     let invalidValues = ['', '2020/10'];
 
     invalidValues.forEach(date => {
