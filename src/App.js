@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { AppContext } from './WithContext';
 import Home from './containers/Home';
 import Create from './containers/Create';
-import {categories, items} from './testData';
 import { 
   flattenArr, 
   createID, 
@@ -19,19 +18,24 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    const withLoading = (cb) => {
+      return (...args) => {
+        this.setState({
+          isLoading: true,
+        });
+        return cb(...args);
+      };
+    };
+
     this.state = {
       isLoading: false,
-      items: flattenArr(items),
-      categories: flattenArr(categories),
+      items: {},
+      categories: {},
       currentDate: parseToYearAndMonth(),
     };
 
     this.actions = {
-      getInitData: async () => {
-        this.setState({
-          isLoading: true,
-        });
-
+      getInitData: withLoading(async () => {
         const promiseArr = [
           categoryAPI.getCategories(), 
           itemAPI.getItems(this.state.currentDate.year, this.state.currentDate.month)
@@ -42,11 +46,34 @@ class App extends React.Component {
           items: flattenArr(itemRes.data),
           isLoading: false,
         });
-      },
+      }),
 
-      selectNewMonth: async (year, month) => {
+      getEditData: withLoading(async (id) => {
+        const promiseArr = [categoryAPI.getCategories()];
+        if (id) {
+          promiseArr.push(itemAPI.getItemById(id));
+        }
+        const [categoryRes, editItemRes] = await Promise.all(promiseArr);
+        const categories = flattenArr(categoryRes.data);
+        const editItem = editItemRes ? editItemRes.data : null;
         this.setState({
-          isLoading: true,
+          categories,
+          isLoading: false,
+        });
+        
+        if (editItem) {
+          // edit mode
+          this.setState({
+            items: {
+              ...this.state.items,
+              [editItem.id]: editItem,
+            }
+          });
+        }
+      }),
+
+      selectNewMonth: withLoading(async (year, month) => {
+        this.setState({
           currentDate: { year, month },
         });
 
@@ -55,7 +82,7 @@ class App extends React.Component {
           isLoading: false,
           items: flattenArr(res.data),
         });
-      },
+      }),
 
       deleteItem: async (item) => {
         await itemAPI.deleteItem(item.id);
@@ -65,7 +92,7 @@ class App extends React.Component {
         });
       },
 
-      createItem: (item, categoryId) => {
+      createItem: withLoading(async (item, categoryId) => {
         const newID = createID();
         const parseDate = parseToYearAndMonth(item.date);
         const newItem = {
@@ -75,27 +102,35 @@ class App extends React.Component {
           monthCategory: `${parseDate.year}-${parseDate.month}`,
           timestamp: createTimestamp(item.date),
         };
+
+        await itemAPI.addItem(newItem);
+        
         this.setState({
           items: {
             ...this.state.items,
             [newID]: newItem,
-          }
+          },
+          isLoading: false,
         });
-      },
-      updateItem: (item, updatedCategoryId) => {
+      }),
+
+      updateItem: withLoading(async (item, updatedCategoryId) => {
         const modifiedItem = {
           ...item,
           cid: updatedCategoryId,
           timestamp: createTimestamp(item.date),
         };
 
+        await itemAPI.updateItem(modifiedItem.id, modifiedItem);
+
         this.setState({
           items: {
             ...this.state.items,
             [modifiedItem.id]: modifiedItem,
-          }
-        })
-      }
+          },
+          isLoading: false,
+        });
+      }),
     }
   }
 

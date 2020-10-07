@@ -12,24 +12,36 @@ const getTypeIndex = (type) => typeList.findIndex(t => t === type);
 class Create extends React.Component {
   constructor(props) {
     super(props);
-    
+    const { id } = this.props.match.params;
+    this.state = {
+      ...this.getInitData(id),
+      validatePass: true,
+      alertMsg: '',
+    }
+  }
+
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    await this.props.actions.getEditData(id);
+
+    this.setState({
+      ...this.getInitData(id),
+    })
+  }
+
+  getInitData(id) {
     let selectedCategory = null;
     let activeTabIndex = 0;
-
-    const { id } = this.props.match.params;
     if (id) {
       selectedCategory = this.getCategoryByItemId(id);
       if (selectedCategory) {
         activeTabIndex = getTypeIndex(selectedCategory.type);
       }
     }
-      
-    this.state = {
+    return {
       activeTabIndex,
       selectedCategory,
-      validatePass: true,
-      alertMsg: '',
-    }
+    };
   }
 
   getItemById = (id) => {
@@ -59,7 +71,7 @@ class Create extends React.Component {
     this.props.history.push('/');
   }
 
-  submitForm = (data, isEditMode) => {
+  submitForm = async (data, isEditMode) => {
     if (!this.state.selectedCategory) {
       this.setState({
         validatePass: false,
@@ -70,10 +82,10 @@ class Create extends React.Component {
 
     if (!isEditMode) {
       // create
-      this.props.actions.createItem(data, this.state.selectedCategory.id);
+      await this.props.actions.createItem(data, this.state.selectedCategory.id);
     } else {
       // update
-      this.props.actions.updateItem(data, this.state.selectedCategory.id);
+      await this.props.actions.updateItem(data, this.state.selectedCategory.id);
     }
     this.props.history.push('/');
   }
@@ -95,7 +107,6 @@ class Create extends React.Component {
     } = this.state;
 
     const { id } = this.props.match.params;
-
     const editItem = (id && contextData.items[id]) ? contextData.items[id] : {};
 
     const filteredCategories = Object.values(contextData.categories)

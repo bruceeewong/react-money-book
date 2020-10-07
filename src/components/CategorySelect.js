@@ -21,25 +21,14 @@ const getCategoryBackColor = (selectedId, id) => {
 };
 
 class CategorySelect extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedCategoryId: props.selectedCategory && props.selectedCategory.id,
-    };
-  }
-
   selectCategory = (e, category) => {
     e.preventDefault();
-    this.setState({
-      selectedCategoryId: category.id,
-    })
     this.props.onSelectCategory(category);
   }
 
   render() {
-    const {categories} = this.props;
-    const {selectedCategoryId} = this.state;
+    const {categories, selectedCategory} = this.props;
+    const selectedCategoryId = selectedCategory && selectedCategory.id;
 
     return (
       <div className="category-select-component">

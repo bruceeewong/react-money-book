@@ -20,14 +20,22 @@ class PriceForm extends React.Component {
     if (form && form.id) {
       mode = 'edit';
     }
-    const initForm = this.processForm(form);
-
     this.state = {
       mode,
       validatePass: true,
       alertMsg: '',
-      form: { ...initForm },
+      form: { ...this.processForm(form) },
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.form.id !== prevProps.form.id) {
+      const { form } = this.props;
+      const result = this.processForm(form);
+      this.setState({
+        form: {...result},
+      });
+    }
   }
 
   processForm = (form) => {
