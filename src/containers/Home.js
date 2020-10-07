@@ -9,7 +9,7 @@ import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
 import {categories, items} from '../testData';
-import {AppContext} from '../App';
+import withContext from '../WithContext';
 
 import {
   LIST_VIEW,
@@ -97,71 +97,63 @@ class Home extends React.Component {
     });
 
     return (
-      <AppContext.Consumer>
-        {
-          ({state}) => {
-            return (
-              <React.Fragment>
-                <Header>
-                  <div className="row w-100">
-                    <div className="col">
-                      <MonthPicker
-                        year={currentDate.year}
-                        month={currentDate.month}
-                        onChange={this.changeDate}
-                      />
-                    </div>
-                    <div className="col">
-                      <TotalPrice
-                        income={totalIncome}
-                        outcome={totalOutcome}
-                      />
-                    </div>
-                  </div>
-                </Header>
+      <React.Fragment>
+        <Header>
+          <div className="row w-100">
+            <div className="col">
+              <MonthPicker
+                year={currentDate.year}
+                month={currentDate.month}
+                onChange={this.changeDate}
+              />
+            </div>
+            <div className="col">
+              <TotalPrice
+                income={totalIncome}
+                outcome={totalOutcome}
+              />
+            </div>
+          </div>
+        </Header>
 
-                <div className="container-area py-3 px-3">
-                  <Tabs 
-                    activeIndex={activeTabIndex} 
-                    onTabChange={this.changeView}
-                  >
-                    <Tab>
-                      <Ionicon
-                        className="rounded-circle mr-2"
-                        fontSize="25px"
-                        color="#007bff"
-                        icon="ios-paper"
-                      />
-                      列表模式
-                    </Tab>
-                    <Tab>
-                      <Ionicon
-                        className="rounded-circle mr-2"
-                        fontSize="25px"
-                        color="#007bff"
-                        icon="ios-pie"
-                      />
-                      图表模式
-                    </Tab>
-                  </Tabs>
+        <div className="container-area py-3 px-3">
+          <Tabs 
+            activeIndex={activeTabIndex} 
+            onTabChange={this.changeView}
+          >
+            <Tab>
+              <Ionicon
+                className="rounded-circle mr-2"
+                fontSize="25px"
+                color="#007bff"
+                icon="ios-paper"
+              />
+              列表模式
+            </Tab>
+            <Tab>
+              <Ionicon
+                className="rounded-circle mr-2"
+                fontSize="25px"
+                color="#007bff"
+                icon="ios-pie"
+              />
+              图表模式
+            </Tab>
+          </Tabs>
 
-                  <CreateBtn onClick={this.createItem} />
-                  { tabView === LIST_VIEW &&
-                    <PriceList
-                      items={itemsWithCategory}
-                      onModifyItem={this.modifyItem}
-                      onDeleteItem={this.deleteItem}
-                    /> }
-                  { tabView === CHART_VIEW &&
-                    <h1 className="chart-title">这里是图表区</h1> }
-                </div>
-              </React.Fragment>
-            )
-          }
-        }
-      </AppContext.Consumer>
+          <CreateBtn onClick={this.createItem} />
+          { tabView === LIST_VIEW &&
+            <PriceList
+              items={itemsWithCategory}
+              onModifyItem={this.modifyItem}
+              onDeleteItem={this.deleteItem}
+            /> }
+          { tabView === CHART_VIEW &&
+            <h1 className="chart-title">这里是图表区</h1> }
+        </div>
+      </React.Fragment>
     );
   };
 }
 
-export default withRouter(Home);
+export default withRouter(withContext(Home));
