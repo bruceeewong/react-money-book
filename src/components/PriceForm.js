@@ -57,7 +57,6 @@ class PriceForm extends React.Component {
       validatePass,
       alertMsg,
     });
-
     if (!validatePass) return;
     
     this.props.onFormSubmit(this.state.form, getPayloadByMode(this.state.mode));

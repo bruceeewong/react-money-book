@@ -1,22 +1,19 @@
 import React from 'react';
 import {mount} from 'enzyme';
 import PriceForm from '../PriceForm';
+import {createID} from '../../utility';
 
-const props = {
+let props = {
   onFormSubmit: jest.fn(),
   onFormCancel: jest.fn(),
 };
 
 const fakeForm = {
+  id: createID(),
   title: '购物',
   price: '100',
   date: '2020-10-07',
 };
-
-const expectFormNotPass = (wrapper) => {
-  expect(wrapper.find('.alert').length).toEqual(1);
-  expect(props.onFormSubmit).not.toHaveBeenCalled();
-}
 
 const fakeEvent = (name, value) => ({
   target: { 
@@ -31,10 +28,15 @@ const propsWithForm = {
   onFormCancel: jest.fn(),
 };
 
+const expectFormNotPass = (wrapper) => {
+  expect(wrapper.find('.alert').length).toEqual(1);
+  expect(props.onFormSubmit).not.toHaveBeenCalled();
+}
+
 let wrapper = null;
 let wrapperWithForm = null;
 
-describe('test rendering', () => {
+describe('test PriceForm rendering', () => {
   beforeEach(() => {
     wrapper = mount(<PriceForm {...props} />);
     wrapperWithForm = mount(<PriceForm {...propsWithForm} />);
@@ -52,7 +54,7 @@ describe('test rendering', () => {
   });
 });
 
-describe('test control default value', () => {
+describe('test PriceForm control default value', () => {
   it('should be empty if no item props', () => {
     wrapper.find('input').forEach(input => {
       const ins = input.instance();
@@ -72,7 +74,7 @@ describe('test control default value', () => {
   });
 });
 
-describe('test form validation', () => {
+describe('test PriceForm form validation', () => {
   it('should stop submit and alert if submit empty form', () => {
     wrapper.find('form').simulate('submit');
     expectFormNotPass(wrapper);
@@ -118,7 +120,7 @@ describe('test form validation', () => {
   });
 });
 
-describe('test create mode', () => {
+describe('test PriceForm create mode', () => {
   it('should be edit mode when pass in prop form', () => {
     expect(wrapper.state('mode')).toEqual('create');
   });
@@ -130,11 +132,16 @@ describe('test create mode', () => {
 
     wrapper.find('form').simulate('submit');
     
-    expect(props.onFormSubmit).toHaveBeenCalledWith(fakeForm, false);
+    const result = {
+      title: fakeForm.title,
+      price: fakeForm.price,
+      date: fakeForm.date,
+    };
+    expect(props.onFormSubmit).toHaveBeenCalledWith(result, false);
   });
 });
 
-describe('test edit mode', () => {
+describe('test PriceForm edit mode', () => {
   it('should be edit mode when pass in prop form', () => {
     expect(wrapperWithForm.state('mode')).toEqual('edit');
   });
@@ -150,14 +157,19 @@ describe('test edit mode', () => {
   });
 });
 
-describe('button', () => {
+describe('test PriceForm button', () => {
   it('should trigger submit event after click submit button', () => {
     wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
     wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
     wrapper.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
 
     wrapper.find('.submit-btn').simulate('click');
-    expect(props.onFormSubmit).toHaveBeenCalledWith(fakeForm, false);
+    const result = {
+      title: fakeForm.title,
+      price: fakeForm.price,
+      date: fakeForm.date,
+    };
+    expect(props.onFormSubmit).toHaveBeenCalledWith(result, false);
   });
 
   it('should trigger cancel event after click submit button', () => {
