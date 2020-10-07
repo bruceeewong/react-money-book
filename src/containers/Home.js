@@ -1,12 +1,12 @@
 import React from 'react';
-import '../App.css';
-import logo from '../logo.svg';
 
+import Header from '../containers/Header';
 import PriceList from '../components/PriceList';
 import ViewTab from '../components/ViewTab';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
+
 import {
   LIST_VIEW,
   CHART_VIEW,
@@ -128,10 +128,7 @@ class Home extends React.Component {
 
     return (
       <React.Fragment>
-        <header className="App-header">
-          <div className="row my-4">
-            <img src={logo} className="App-logo" alt="logo" />
-          </div>
+        <Header>
           <div className="row w-100">
             <div className="col">
               <MonthPicker
@@ -147,7 +144,7 @@ class Home extends React.Component {
               />
             </div>
           </div>
-        </header>
+        </Header>
 
         <div className="container-area py-3 px-3">
           <ViewTab 
