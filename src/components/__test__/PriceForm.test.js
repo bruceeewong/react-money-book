@@ -130,3 +130,19 @@ describe('test edit mode', () => {
     expect(propsWithForm.onFormSubmit).toHaveBeenCalledWith(fakeForm, true);
   });
 });
+
+describe('button', () => {
+  it('should trigger submit event after click submit button', () => {
+    wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
+    wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
+    wrapper.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
+
+    wrapper.find('.submit-btn').simulate('click');
+    expect(props.onFormSubmit).toHaveBeenCalledWith(fakeForm, false);
+  });
+
+  it('should trigger cancel event after click submit button', () => {
+    wrapper.find('.cancel-btn').simulate('click');
+    expect(props.onFormCancel).toHaveBeenCalled();
+  });
+});

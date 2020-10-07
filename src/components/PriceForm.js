@@ -94,6 +94,8 @@ class PriceForm extends React.Component {
   }
 
   render() {
+    const {onFormCancel} = this.props;
+    
     const {
       isInit, 
       validatePass,
@@ -112,6 +114,9 @@ class PriceForm extends React.Component {
           <input id="form-title" name="title" value={form.title} onChange={this.onChange} />
           <input id="form-price" name="price" value={form.price} type="number" onChange={this.onChange} />
           <input id="form-date" name="date" value={form.date} type="date" onChange={this.onChange} />
+          
+          <button type="submit" className="submit-btn ">提交</button>
+          <button className="cancel-btn" onClick={onFormCancel}>取消</button>
         </form>
       </section>
     );
