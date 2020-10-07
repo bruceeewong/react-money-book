@@ -76,7 +76,7 @@ class CategorySelect extends React.Component {
 
 CategorySelect.propTypes = {
   categories: PropTypes.array.isRequired,
-  selectedCategory: PropTypes.object.isRequired,
+  selectedCategory: PropTypes.object,
   onSelectCategory: PropTypes.func.isRequired,
 };
 

@@ -9,7 +9,13 @@ const withContext = (Component) => {
   return (props) => (
     <AppContext.Consumer>
       {
-        ({state}) => <Component {...props} data={state} ></Component>
+        ({state, actions}) => (
+          <Component 
+            {...props} 
+            data={state}
+            actions={actions}
+          ></Component>
+        )
       }
     </AppContext.Consumer>
   )

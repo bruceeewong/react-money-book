@@ -80,7 +80,7 @@ class MonthPicker extends React.Component {
         {/* 下拉按钮部分 */} 
         {/* <p>选择月份</p> */}
         <button 
-          className="btn btn-lg btn-secondary dropdown-toggle"
+          className="btn btn-secondary dropdown-toggle"
           data-toggle="dropdown"
           onClick={this.toggleDropdown}  
         >

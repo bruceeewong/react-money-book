@@ -70,3 +70,10 @@ export const flattenArr = (arr) => {
     return map;
   }, {});
 };
+
+/**
+ * 生成ID
+ */
+export const createID = () => {
+  return '_' + Math.random().toString(36).substr(2, 9);
+}

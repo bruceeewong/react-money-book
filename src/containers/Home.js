@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import withContext from '../WithContext';
 
 import Header from '../components/Header';
 import PriceList from '../components/PriceList';
@@ -8,8 +9,6 @@ import {Tabs, Tab} from '../components/Tabs';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
-import {categories, items} from '../testData';
-import withContext from '../WithContext';
 
 import {
   LIST_VIEW,
@@ -25,14 +24,12 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items,
       currentDate: parseToYearAndMonth('2020/09/01'),
       activeTabIndex: 0,
     };
   }
 
   changeView = (index) => {
-    console.log(index)
     this.setState({
       activeTabIndex: index,
     });
@@ -51,43 +48,34 @@ class Home extends React.Component {
     this.props.history.push('/create');
   }
   
-  modifyItem = (modifiedItem) => {
-    const modifiedItems = this.state.items.map(item => {
-      if (item.id !== modifiedItem.id) return item;
-      return {
-        ...item,
-        title: '更新后的标题',
-      };
-    });
-    this.setState({
-      items: modifiedItems,
-    });
+  modifyItem = (item) => {
+    this.props.history.push(`/edit/${item.id}`);
   }
 
-  deleteItem = (deletedItem) => {
-    const filteredItems = this.state.items.filter(item => item.id !== deletedItem.id);
-    this.setState({
-      items: filteredItems,
-    });
+  deleteItem = (item) => {
+    this.props.actions.deleteItem(item);
   }
 
   render() {
+    const { data: contextData } = this.props;
+
     const {
-      items, 
       currentDate,
       activeTabIndex,
     } = this.state;
     const tabView = tabText[activeTabIndex];
 
-    const itemsWithCategory = items.map(item => {
-      const cpItem = {...item};
-      cpItem.category = categories.find(c => c.id === cpItem.cid);
-      return cpItem;
-    }).filter(item => {
-      return item.date.includes(`${currentDate.year}-${padMonth(currentDate.month)}`);
-    });
-    let totalIncome = 0, totalOutcome = 0;
+    const itemsWithCategory = Object.values(contextData.items)
+      .map(item => {
+        const cpItem = {...item};
+        cpItem.category = contextData.categories[cpItem.cid];
+        return cpItem;
+      })
+      .filter(item => {
+        return item.date.includes(`${currentDate.year}-${padMonth(currentDate.month)}`);
+      });
 
+    let totalIncome = 0, totalOutcome = 0;
     itemsWithCategory.forEach(item => {
       if (item.category.type === TYPE_OUTCOME) {
         totalOutcome += item.price;
@@ -99,7 +87,7 @@ class Home extends React.Component {
     return (
       <React.Fragment>
         <Header>
-          <div className="row w-100">
+          <div className="row w-100 pb-3">
             <div className="col">
               <MonthPicker
                 year={currentDate.year}

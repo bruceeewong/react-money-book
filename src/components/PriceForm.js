@@ -89,7 +89,12 @@ class PriceForm extends React.Component {
   }
 
   onChange = (e) => {
-    const {name, value} = e.target;
+    let {name, value, type} = e.target;
+
+    if (type === 'number') {
+      value = parseInt(value);
+    }
+    
     this.setState({
       form: {
         ...this.state.form,
@@ -118,7 +123,7 @@ class PriceForm extends React.Component {
 
         <form onSubmit={this.submitForm}>
           <div className="form-group">
-            <label htmlFor="form-title">日期 *</label>
+            <label htmlFor="form-title">标题 *</label>
             <input 
               id="form-title" 
               name="title" 

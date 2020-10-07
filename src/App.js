@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './containers/Home';
 import Create from './containers/Create';
 import {categories, items} from './testData';
-import { flattenArr } from './utility';
+import { flattenArr, createID, parseToYearAndMonth } from './utility';
 
 export const AppContext = React.createContext();
 class App extends React.Component {
@@ -12,6 +12,31 @@ class App extends React.Component {
     this.state = {
       items: flattenArr(items),
       categories: flattenArr(categories),
+    };
+    this.actions = {
+      deleteItem: (item) => {
+        delete this.state.items[item.id];
+        this.setState({
+          items: this.state.items,
+        });
+      },
+      createItem: (item, cid) => {
+        const newID = createID();
+        const parseDate = parseToYearAndMonth(item.date);
+        const newItem = {
+          ...item,
+          cid,
+          id: newID,
+          monthCategory: `${parseDate.year}-${parseDate.month}`,
+          timestamp: new Date(item.date).getTime(),
+        };
+        this.setState({
+          items: {
+            ...this.state.items,
+            [newID]: newItem,
+          }
+        });
+      }
     }
   }
 
@@ -20,6 +45,7 @@ class App extends React.Component {
       <AppContext.Provider
          value={{
            state: this.state,
+           actions: this.actions,
          }}
       >
         <Router>
