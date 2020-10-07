@@ -97,14 +97,36 @@ describe('test form validation', () => {
       expectFormNotPass(wrapper);
     });
   });
+});
 
-  it('should submit with payload and no alert if values are valid', () => {
+describe('test create mode', () => {
+  it('should be edit mode when pass in prop form', () => {
+    expect(wrapper.state('mode')).toEqual('create');
+  });
+
+  it('create mode: should submit with [form, false] and no alert if values are valid', () => {
     wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
     wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
     wrapper.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
 
     wrapper.find('form').simulate('submit');
     
-    expect(props.onFormSubmit).toHaveBeenCalledWith(fakeForm);
+    expect(props.onFormSubmit).toHaveBeenCalledWith(fakeForm, false);
+  });
+});
+
+describe('test edit mode', () => {
+  it('should be edit mode when pass in prop form', () => {
+    expect(wrapperWithForm.state('mode')).toEqual('edit');
+  });
+
+  it('should submit with [form, true] and no alert if values are valid', () => {
+    wrapperWithForm.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
+    wrapperWithForm.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));
+    wrapperWithForm.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
+
+    wrapperWithForm.find('form').simulate('submit');
+    
+    expect(propsWithForm.onFormSubmit).toHaveBeenCalledWith(fakeForm, true);
   });
 });

@@ -1,8 +1,14 @@
 import React from 'react';
+import Header from '../components/Header';
+import PriceForm from '../components/PriceForm';
 
 const Create = ({ match }) => {
   return (
-    <h1>Create Page {match.params.id}</h1>
+    <React.Fragment>
+      <Header>Create Page {match.params.id}</Header>
+      <PriceForm
+      ></PriceForm>
+    </React.Fragment>
   );
 };
 

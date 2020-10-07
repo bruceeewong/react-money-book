@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../containers/Header';
+import Header from '../components/Header';
 import PriceList from '../components/PriceList';
 import ViewTab from '../components/ViewTab';
 import TotalPrice from '../components/TotalPrice';

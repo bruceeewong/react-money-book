@@ -7,12 +7,22 @@ const defaultForm = {
   date: '',
 };
 
+const getPayloadByMode = (mode) => {
+  return mode === 'create' ? false : true;
+}
+
 class PriceForm extends React.Component {
   constructor(props) {
     super(props);
+    let mode = 'create';
+    if (this.props.form) {
+      mode = 'edit';
+    }
+
     const initForm = this.processForm(this.props.form);
 
     this.state = {
+      mode,
       isInit: true,
       validatePass: false,
       alertMsg: '',
@@ -51,7 +61,7 @@ class PriceForm extends React.Component {
 
     if (!validatePass) return;
     
-    this.props.onFormSubmit(this.state.form);
+    this.props.onFormSubmit(this.state.form, getPayloadByMode(this.state.mode));
   }
 
   validateForm = (form, cb) => {
