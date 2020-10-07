@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 
 import Header from '../components/Header';
 import PriceList from '../components/PriceList';
-import ViewTab from '../components/ViewTab';
+import Ionicon from 'react-ionicons';
+import {Tabs, Tab} from '../components/Tabs';
 import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
@@ -50,17 +51,24 @@ export const items = [
   },
 ];
 
+const tabText = [LIST_VIEW, CHART_VIEW];
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items,
       currentDate: parseToYearAndMonth('2020/09/01'),
-      tabView: LIST_VIEW,
+      activeTabIndex: 0,
     };
   }
 
-  changeView = (view) => { this.setState({tabView: view}); }
+  changeView = (index) => {
+    console.log(index)
+    this.setState({
+      activeTabIndex: index,
+    });
+  }
   
   changeDate = (year, month) => {
     this.setState({
@@ -96,7 +104,13 @@ class Home extends React.Component {
   }
 
   render() {
-    const {items, currentDate, tabView} = this.state;
+    const {
+      items, 
+      currentDate,
+      activeTabIndex,
+    } = this.state;
+    const tabView = tabText[activeTabIndex];
+
     const itemsWithCategory = items.map(item => {
       const cpItem = {...item};
       cpItem.category = categories[cpItem.cid];
@@ -134,10 +148,30 @@ class Home extends React.Component {
         </Header>
 
         <div className="container-area py-3 px-3">
-          <ViewTab 
-            activeTab={tabView}
-            onTabChange={this.changeView}  
-          />
+          <Tabs 
+            activeIndex={activeTabIndex} 
+            onTabChange={this.changeView}
+          >
+            <Tab>
+              <Ionicon
+                className="rounded-circle mr-2"
+                fontSize="25px"
+                color="#007bff"
+                icon="ios-paper"
+              />
+              列表模式
+            </Tab>
+            <Tab>
+              <Ionicon
+                className="rounded-circle mr-2"
+                fontSize="25px"
+                color="#007bff"
+                icon="ios-pie"
+              />
+              图表模式
+            </Tab>
+          </Tabs>
+
           <CreateBtn onClick={this.createItem} />
           { tabView === LIST_VIEW &&
             <PriceList
