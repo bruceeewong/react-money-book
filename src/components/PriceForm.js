@@ -14,17 +14,17 @@ const getPayloadByMode = (mode) => {
 class PriceForm extends React.Component {
   constructor(props) {
     super(props);
+
+    const { form } = this.props;
     let mode = 'create';
-    if (this.props.form) {
+    if (form && form.id) {
       mode = 'edit';
     }
-
-    const initForm = this.processForm(this.props.form);
+    const initForm = this.processForm(form);
 
     this.state = {
       mode,
-      isInit: true,
-      validatePass: false,
+      validatePass: true,
       alertMsg: '',
       form: { ...initForm },
     };
@@ -34,17 +34,18 @@ class PriceForm extends React.Component {
     if (typeof form !== 'object') {
       return defaultForm;
     }
-    return form;
+    let result = {...form}
+    // 如果缺少绑定字段，填补
+    Object.keys(defaultForm).forEach(key => {
+      if (!Object.prototype.hasOwnProperty.call(form, key)) {
+        result[key] = defaultForm[key];
+      }
+    })
+    return result;
   }
 
   submitForm = (e) => {
     e.preventDefault();
-
-    if (this.state.isInit) {
-      this.setState({
-        isInit: false,
-      });
-    }
 
     let validatePass, alertMsg;
     this.validateForm(this.state.form, (result, msg) => {
@@ -103,7 +104,6 @@ class PriceForm extends React.Component {
     const {onFormCancel} = this.props;
     
     const {
-      isInit, 
       validatePass,
       form,
       alertMsg,
@@ -111,12 +111,6 @@ class PriceForm extends React.Component {
 
     return (
       <section>
-        {
-          !isInit &&
-          !validatePass &&
-          <div className="alert alert-danger">{alertMsg}</div>
-        }
-
         <form onSubmit={this.submitForm}>
           <div className="form-group">
             <label htmlFor="form-title">标题 *</label>
@@ -159,6 +153,11 @@ class PriceForm extends React.Component {
           <button type="submit" className="btn btn-primary submit-btn mr-3">提交</button>
           <button className="btn btn-secondary cancel-btn" onClick={onFormCancel}>取消</button>
         </form>
+
+        {
+          !validatePass &&
+          <div className="alert alert-danger mt-3">{alertMsg}</div>
+        }
       </section>
     );
   }

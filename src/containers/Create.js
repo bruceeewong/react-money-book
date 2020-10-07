@@ -27,6 +27,8 @@ class Create extends React.Component {
     this.state = {
       activeTabIndex,
       selectedCategory,
+      validatePass: true,
+      alertMsg: '',
     }
   }
 
@@ -58,6 +60,14 @@ class Create extends React.Component {
   }
 
   submitForm = (data, isEditMode) => {
+    if (!this.state.selectedCategory) {
+      this.setState({
+        validatePass: false,
+        alertMsg: '请选择记账分类',
+      });
+      return;
+    }
+
     if (!isEditMode) {
       // create
       this.props.actions.createItem(data, this.state.selectedCategory.id);
@@ -76,8 +86,16 @@ class Create extends React.Component {
 
   render() {
     const { data: contextData } = this.props;
-    const { activeTabIndex, selectedCategory } = this.state;
+    
+    const { 
+      activeTabIndex,
+      selectedCategory,
+      validatePass,
+      alertMsg,
+    } = this.state;
+
     const { id } = this.props.match.params;
+
     const editItem = (id && contextData.items[id]) ? contextData.items[id] : {};
 
     const filteredCategories = Object.values(contextData.categories)
@@ -106,6 +124,11 @@ class Create extends React.Component {
             onFormSubmit={this.submitForm}
             onFormCancel={this.cancelSubmit}
           ></PriceForm>
+
+        {
+          !validatePass &&
+          <div className="alert alert-danger mt-3">{alertMsg}</div>
+        }
         </main>
       </React.Fragment>
     );

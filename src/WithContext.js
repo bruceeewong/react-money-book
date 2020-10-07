@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppContext } from './App';
+
+export const AppContext = React.createContext();
 
 /**
  * HOC: Context上下文提供

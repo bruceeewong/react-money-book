@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { AppContext } from './WithContext';
 import Home from './containers/Home';
 import Create from './containers/Create';
 import {categories, items} from './testData';
@@ -10,14 +11,15 @@ import {
   createTimestamp,
 } from './utility';
 
-export const AppContext = React.createContext();
 class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       items: flattenArr(items),
       categories: flattenArr(categories),
     };
+
     this.actions = {
       deleteItem: (item) => {
         delete this.state.items[item.id];
