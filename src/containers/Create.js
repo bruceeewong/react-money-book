@@ -5,7 +5,7 @@ import CategorySelect from '../components/CategorySelect';
 import PriceForm from '../components/PriceForm';
 import {categories} from '../testData';
 import { TYPE_INCOME, TYPE_OUTCOME } from '../utility';
-
+import {AppContext} from '../App';
 const typeList = [TYPE_OUTCOME, TYPE_INCOME];
 
 class Create extends React.Component {
@@ -27,27 +27,34 @@ class Create extends React.Component {
     const filteredCategories = categories.filter(c => c.type === typeList[activeIndex]);
 
     return (
-      <React.Fragment>
-        <Header>Create Page {this.props.match.params.id}</Header>
-        <main className="px-4">
-          <Tabs 
-            activeIndex={activeIndex}
-            onTabChange={this.selectType}  
-          >
-            <Tab>支出</Tab>
-            <Tab>收入</Tab>
-          </Tabs>
+      <AppContext.Consumer>
+        {
+          (({state}) => {
+            return (
+            <React.Fragment>
+              <Header>Create Page {this.props.match.params.id}</Header>
+              <main className="px-4">
+                <Tabs 
+                  activeIndex={activeIndex}
+                  onTabChange={this.selectType}  
+                >
+                  <Tab>支出</Tab>
+                  <Tab>收入</Tab>
+                </Tabs>
 
-          <CategorySelect
-            categories={filteredCategories}
-            selectedCategory={filteredCategories[0]}
-            onSelectCategory={() => {}}
-          />
+                <CategorySelect
+                  categories={filteredCategories}
+                  selectedCategory={filteredCategories[0]}
+                  onSelectCategory={() => {}}
+                />
 
-          <PriceForm
-          ></PriceForm>
-        </main>
-      </React.Fragment>
+                <PriceForm
+                ></PriceForm>
+              </main>
+            </React.Fragment>
+          )})
+        }
+      </AppContext.Consumer>
     );
   }
 }

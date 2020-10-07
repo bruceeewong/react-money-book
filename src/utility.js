@@ -59,3 +59,14 @@ export const parseToYearAndMonth = (str) => {
     month: date.getMonth() + 1,
   };
 };
+
+/**
+ * 将数组中元素按id展成map
+ * @param {array} arr 
+ */
+export const flattenArr = (arr) => {
+  return arr.reduce((map, item) => {
+    map[item.id] = item;
+    return map;
+  }, {});
+};
