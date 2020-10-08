@@ -30,11 +30,9 @@ describe('test CategorySelect component', () => {
     expect(wrapper.find('.category-item').first().hasClass('active')).toEqual(true);
   });
   
-  it('should highlight class and trigger callback when click the item', () => {
+  it('should trigger callback when click the item', () => {
     const wrapper = mount(<CategorySelect {...propsWithCategory} />);
     wrapper.find('.category-item').at(1).simulate('click');
-    expect(wrapper.find('.category-item').at(0).hasClass('active')).toEqual(false); // 移除默认第一项的高亮
-    expect(wrapper.find('.category-item').at(1).hasClass('active')).toEqual(true);
     expect(propsWithCategory.onSelectCategory).toHaveBeenCalledWith(categories[1]);
   });
 });

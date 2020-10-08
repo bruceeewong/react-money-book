@@ -75,6 +75,11 @@ describe('test PriceForm control default value', () => {
 });
 
 describe('test PriceForm form validation', () => {
+  let wrapper = null;
+  beforeEach(() => {
+    wrapper = mount(<PriceForm {...props} />);
+  });
+
   it('should stop submit and alert if submit empty form', () => {
     wrapper.find('form').simulate('submit');
     expectFormNotPass(wrapper);
@@ -158,6 +163,11 @@ describe('test PriceForm edit mode', () => {
 });
 
 describe('test PriceForm button', () => {
+  let wrapper = null;
+  beforeEach(() => {
+    wrapper = mount(<PriceForm {...props} />);
+  });
+  
   it('should trigger submit event after click submit button', () => {
     wrapper.find('#form-title').simulate('change', fakeEvent('title', fakeForm.title));
     wrapper.find('#form-price').simulate('change', fakeEvent('price', fakeForm.price));

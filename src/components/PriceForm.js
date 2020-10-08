@@ -29,6 +29,9 @@ class PriceForm extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (!this.props.form) {
+      return;
+    }
     if (this.props.form.id !== prevProps.form.id) {
       const { form } = this.props;
       const result = this.processForm(form);
