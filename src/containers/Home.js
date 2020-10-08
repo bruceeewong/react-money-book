@@ -100,7 +100,8 @@ class Home extends React.Component {
             </div>
           </div>
         </Header>
-        <div className="container-area py-3 px-3">
+
+        <main className="container-area p-4">
           {
             isLoading && 
             <Loader />
@@ -147,7 +148,7 @@ class Home extends React.Component {
               }
             </>
           }
-        </div>
+        </main>
       </React.Fragment>
     );
   };

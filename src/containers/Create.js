@@ -114,7 +114,7 @@ class Create extends React.Component {
 
     return (
       <React.Fragment>
-        <Header>Create Page {this.props.match.params.id}</Header>
+        <Header></Header>
         <main className="px-4">
           <Tabs 
             activeIndex={activeTabIndex}
