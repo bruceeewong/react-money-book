@@ -44,7 +44,6 @@ export const categories = [
 ];
 
 
-// FIXME: 测试数据
 export const items = [
   {
     "title": "buy stuff for kitten",

@@ -82,11 +82,12 @@ export class Home extends React.Component {
     let totalIncome = 0, totalOutcome = 0;
     itemsWithCategory.forEach(item => {
       if (item.category.type === TYPE_OUTCOME) {
-        totalOutcome += item.price;
+        totalOutcome += (item.price * 1);
       } else {
-        totalIncome += item.price;
+        totalIncome += (item.price * 1);
       }
     });
+    console.log(totalIncome, totalOutcome);
 
     const chartOutcomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_OUTCOME);
     const chartIncomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_INCOME);

@@ -67,6 +67,15 @@ describe('test App init behaviors', () => {
     expect(mockAxios.get).toHaveBeenCalledTimes(3);
 
     const currentState = wrapper.instance().state;
-    expect(currentState.items.hasOwnProperty(editId)).toBeTruthy();
-  })
+    // expect(currentState.items.hasOwnProperty(editId)).toBeTruthy();
+    expect(currentState.items).toHaveProperty('testID');
+  });
+
+  test('createItem with init data', async () => {
+    const wrapper = mount(<App />);
+    await waitForAsync();
+    
+    await wrapper.instance().actions.createItem({}, '2');
+    expect(mockAxios.post).toHaveBeenCalledTimes(1);
+  });
 });

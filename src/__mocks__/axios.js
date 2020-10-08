@@ -8,5 +8,13 @@ export default {
     } else if (url.startsWith('/items')) {
       return Promise.resolve({ data: items });
     } 
+  }),
+  post: jest.fn((url) => {
+    return Promise.resolve({
+      data: {
+        ...items[0],
+        id: 'newID',
+      },
+    });
   })
 };
