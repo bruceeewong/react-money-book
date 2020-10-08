@@ -1,3 +1,5 @@
+import { categories } from "./testData";
+
 export const LIST_VIEW = 'list';
 export const CHART_VIEW = 'chart';
 export const TYPE_OUTCOME = 'outcome';
@@ -120,4 +122,28 @@ export const Palette = {
   gray: '#555',
   lightGray: '#efefef',
   white: '#fff',
+}
+
+/**
+ * 饼图数据转换算法
+ * @param {array} items 
+ * @param {string} type 
+ */
+export const generateChartDataByCategory = (items, type = TYPE_INCOME) => {
+  let categoryMap = {};
+  items
+    .filter(item => item.category.type === type)
+    .forEach(item => {
+      if (!categoryMap[item.cid]) {
+        categoryMap[item.cid] = {
+          name: item.category.name,
+          value: item.price * 1,
+          items: [item.id],
+        }
+      } else {
+        categoryMap[item.cid].value += (item.price * 1);
+        categoryMap[item.cid].items.push(item.id);
+      }
+    });
+  return Object.values(categoryMap);
 }

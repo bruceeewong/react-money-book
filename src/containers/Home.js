@@ -10,18 +10,17 @@ import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
 import Loader from '../components/Loader';
-import { PieChart, Pie, Tooltip, Cell } from 'recharts';
-import { chartData } from '../testData';
+import CustomPieChart from '../components/PieChart';
 
 import {
   LIST_VIEW,
   CHART_VIEW,
   TYPE_OUTCOME,
-  Palette,
+  generateChartDataByCategory,
+  TYPE_INCOME,
 } from '../utility';
 
 const tabText = [LIST_VIEW, CHART_VIEW];
-const Colors = Object.values(Palette);
 
 export class Home extends React.Component {
   constructor(props) {
@@ -89,6 +88,9 @@ export class Home extends React.Component {
       }
     });
 
+    const chartOutcomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_OUTCOME);
+    const chartIncomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_INCOME);
+
     return (
       <React.Fragment>
         <Header>
@@ -152,27 +154,14 @@ export class Home extends React.Component {
               }
               { 
                 tabView === CHART_VIEW &&
-                <PieChart width={400} height={400}>
-                  <Pie 
-                    dataKey="value"
-                    data={chartData}
-                    cx={200} 
-                    cy={200} 
-                    outerRadius={80} 
-                    fill="#8884d8" 
-                    label 
-                  >
-                    {
-                      chartData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={Colors[index % Colors.length]}
-                        ></Cell>
-                      ))
-                    }
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
+                <section className="row">
+                  <div className="col-lg-6 col-sm-12">
+                    <CustomPieChart title="本月支出" categoryData={chartOutcomeDataByCategory} />
+                  </div>
+                  <div className="col-lg-6 col-sm-12">
+                    <CustomPieChart title="本月收入" categoryData={chartIncomeDataByCategory} />
+                  </div>
+                </section>
               }
             </>
           }
