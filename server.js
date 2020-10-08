@@ -5,7 +5,7 @@ const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middleWares = jsonServer.defaults();
 const root = __dirname + '/build';
-const port = 3000;
+const port = process.env.LEANCLOUD_APP_PORT;  // lean cloud deploy
 
 server.use(express.static(root, { maxAge: 864000 }));
 server.use(middleWares);
