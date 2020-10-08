@@ -154,7 +154,7 @@ export class Home extends React.Component {
               }
               { 
                 tabView === CHART_VIEW &&
-                <section className="row">
+                <section className="chart-section row">
                   <div className="col-lg-6 col-sm-12">
                     <CustomPieChart title="本月支出" categoryData={chartOutcomeDataByCategory} />
                   </div>

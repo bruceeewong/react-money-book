@@ -115,7 +115,7 @@ describe('tets Home page behaviors', () => {
   it('should switch to chart view and hide PirceList when click view tab', () => {
     wrapper.find('.nav-link').last().simulate('click');
     expect(wrapper.find(Tabs).props().activeIndex).toEqual(1);
-    expect(wrapper.find('.chart-title').length).toEqual(1);
+    expect(wrapper.find('.chart-section').length).toEqual(1);
     expect(wrapper.find(PriceList).length).toEqual(0);
   });
 
