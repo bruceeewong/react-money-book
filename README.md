@@ -1,38 +1,27 @@
 # React 账本项目
 
 > 作者：Bruski
+>
+> 慕课网课程：[React16组件化+测试+全流程 实战在线账本项目](https://coding.imooc.com/learn/list/302.html)
 
-第一个React实战项目，制作一个PC端的账本应用
+第一个React实战项目，一个简单的账本应用，涉及的React开发技术面广：React组件编写、Router、Context、HOC等。
 
-CSS库：Bootstrap4
+- React: 16.13.1
+- CSS库：Bootstrap4
+- ICON库：react-ionicons 2.1.6
+- HTTP库：axios 0.20.0
+- 图表库：recharts
+- Mock&API Server: json-server 0.16.2
+- 静态资源Server: express
 
-## 第三方库
+## 课程模块
 
-CSS库：Bootstrap4
+![](docs/img/lesson.png)
 
-ICON库：react-ionicons@2.1.6
+## 项目开发流程
 
-## 组件
+![](docs/img/project-learning-flow.png)
 
-### PriceList
+## React应用开发思路
 
-### ViewTab
-
-### TotalPrice
-
-### 月份选择器
-
-需求
-
-- 按钮显示传入的年月，点击按钮可以打开和关闭下拉菜单
-- 显示前后四年和 01月到12月
-- 传入的年和月，打开菜单以后应该高亮
-- 点击不同的年可以切换，点击月份应该触发回调
-
-分段开发
-
-- 创建一个按钮，显示传入的年和月份
-- 创建一个下拉菜单，点击按钮可以显示，再点击隐藏
-- 在下拉菜单中，显示两列，分别为年份和月份的信息
-- 给这两列添加对应的选择高亮
-- 添加点击年份和月份后的交互
+![](react-dev-flow.png)
