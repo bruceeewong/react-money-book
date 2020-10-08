@@ -18,8 +18,8 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
       {
         items.map(item => (
           <li 
+            key={item.id}
             className="list-group-item d-flex justify-content-between align-items-center"
-            key={item.id}  
           >
             {/* 图标 */}
             <span className="col-1 badge badge-primary">
@@ -46,7 +46,7 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
 
             {/* 操作按钮 */}
             <a
-              className="col-1"
+              className="update-btn col-1"
               onClick={() => {onModifyItem(item)}}
             >
               <Ionicon
@@ -58,7 +58,7 @@ const PriceList = ({items, onModifyItem, onDeleteItem}) => {
               />
             </a>
             <a 
-              className="col-1"
+              className="delete-btn col-1"
               onClick={() => {onDeleteItem(item)}}
             >
               <Ionicon

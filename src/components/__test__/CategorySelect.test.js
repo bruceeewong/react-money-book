@@ -14,7 +14,7 @@ let propsWithCategory = {
   selectedCategory: categories[0],
   onSelectCategory: jest.fn(),
 };
-x
+
 describe('test CategorySelect component', () => {
   it('renders with categories should render the correct items', () => {
     const wrapper = mount(<CategorySelect {...props} />);

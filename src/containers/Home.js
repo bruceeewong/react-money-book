@@ -19,7 +19,7 @@ import {
 
 const tabText = [LIST_VIEW, CHART_VIEW];
 
-class Home extends React.Component {
+export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,24 +53,28 @@ class Home extends React.Component {
     this.props.actions.deleteItem(item);
   }
 
+  getItemsWithCategory = (item) => {
+    const { data: contextData } = this.props;
+    return Object.values(contextData.items)
+      .map(item => {
+        const cpItem = {...item};
+        cpItem.category = contextData.categories[cpItem.cid];
+        return cpItem;
+      });
+  }
+
   render() {
     const {
       activeTabIndex,
     } = this.state;
     const tabView = tabText[activeTabIndex];
 
-    const { data: contextData } = this.props;
     const {
       currentDate,
       isLoading,
-    } = contextData;
+    } = this.props.data;
 
-    const itemsWithCategory = Object.values(contextData.items)
-      .map(item => {
-        const cpItem = {...item};
-        cpItem.category = contextData.categories[cpItem.cid];
-        return cpItem;
-      });
+    const itemsWithCategory = this.getItemsWithCategory();
 
     let totalIncome = 0, totalOutcome = 0;
     itemsWithCategory.forEach(item => {
