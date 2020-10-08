@@ -88,7 +88,7 @@ export const flattenArr = (arr) => {
     map[item.id] = item;
     return map;
   }, {});
-};
+}
 
 /**
  * 生成ID
@@ -110,4 +110,14 @@ export const isArrayEmpty = (arr) => {
     throw new TypeError('param should be array type');
   }
   return arr.length === 0;
+}
+
+export const Palette = {
+  blue: '#347eff',
+  deepBlue: '#61dafb',
+  green: '#28a745',
+  red: '#dc3545',
+  gray: '#555',
+  lightGray: '#efefef',
+  white: '#fff',
 }

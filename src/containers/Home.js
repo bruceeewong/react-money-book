@@ -10,14 +10,18 @@ import TotalPrice from '../components/TotalPrice';
 import MonthPicker from '../components/MonthPicker';
 import CreateBtn from '../components/CreateBtn';
 import Loader from '../components/Loader';
+import { PieChart, Pie, Tooltip, Cell } from 'recharts';
+import { chartData } from '../testData';
 
 import {
   LIST_VIEW,
   CHART_VIEW,
   TYPE_OUTCOME,
+  Palette,
 } from '../utility';
 
 const tabText = [LIST_VIEW, CHART_VIEW];
+const Colors = Object.values(Palette);
 
 export class Home extends React.Component {
   constructor(props) {
@@ -148,7 +152,27 @@ export class Home extends React.Component {
               }
               { 
                 tabView === CHART_VIEW &&
-                <h1 className="chart-title">这里是图表区</h1> 
+                <PieChart width={400} height={400}>
+                  <Pie 
+                    dataKey="value"
+                    data={chartData}
+                    cx={200} 
+                    cy={200} 
+                    outerRadius={80} 
+                    fill="#8884d8" 
+                    label 
+                  >
+                    {
+                      chartData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={Colors[index % Colors.length]}
+                        ></Cell>
+                      ))
+                    }
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
               }
             </>
           }

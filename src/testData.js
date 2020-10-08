@@ -101,3 +101,12 @@ export const items = [
     "timestamp": 1534291200000,
   }
 ];
+
+export const chartData = [
+  { name: 'a', value: 100 },
+  { name: 'b', value: 400 },
+  { name: 'c', value: 700 },
+  { name: 'd', value: 600 },
+  { name: 'e', value: 300 },
+  { name: 'f', value: 500 },
+];
