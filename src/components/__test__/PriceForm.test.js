@@ -74,6 +74,20 @@ describe('test PriceForm control default value', () => {
   });
 });
 
+describe('test PriceForm controlled input', () => {
+  it('should convert price from string to input in state', () => {
+    const priceInput = wrapper.find('#form-price');
+    priceInput.simulate('change', fakeEvent('price', '999'));
+    expect(wrapper.state('form').price).toEqual(999);
+  });
+
+  it('should be 0 when price input is cleared by user', () => {
+    const priceInput = wrapper.find('#form-price');
+    priceInput.simulate('change', fakeEvent('price', ''));
+    expect(wrapper.state('form').price).toEqual(0);
+  });
+});
+
 describe('test PriceForm form validation', () => {
   let wrapper = null;
   beforeEach(() => {
@@ -139,7 +153,7 @@ describe('test PriceForm create mode', () => {
     
     const result = {
       title: fakeForm.title,
-      price: fakeForm.price,
+      price: fakeForm.price * 1,
       date: fakeForm.date,
     };
     expect(props.onFormSubmit).toHaveBeenCalledWith(result, false);
@@ -157,8 +171,11 @@ describe('test PriceForm edit mode', () => {
     wrapperWithForm.find('#form-date').simulate('change', fakeEvent('date', fakeForm.date));
 
     wrapperWithForm.find('form').simulate('submit');
-    
-    expect(propsWithForm.onFormSubmit).toHaveBeenCalledWith(fakeForm, true);
+    const expectForm = {
+      ...fakeForm,
+      price: fakeForm.price * 1,
+    };
+    expect(propsWithForm.onFormSubmit).toHaveBeenCalledWith(expectForm, true);
   });
 });
 
@@ -176,7 +193,7 @@ describe('test PriceForm button', () => {
     wrapper.find('.submit-btn').simulate('click');
     const result = {
       title: fakeForm.title,
-      price: fakeForm.price,
+      price: fakeForm.price * 1,
       date: fakeForm.date,
     };
     expect(props.onFormSubmit).toHaveBeenCalledWith(result, false);

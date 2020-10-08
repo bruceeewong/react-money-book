@@ -95,13 +95,19 @@ class PriceForm extends React.Component {
     }
   }
 
-  onChange = (e) => {
-    let {name, value, type} = e.target;
+  onInputChange = (e) => {
+    let {name, value} = e.target;
+    this.setState({
+      form: {
+        ...this.state.form,
+        [name]: value,
+      },
+    });
+  }
 
-    if (type === 'number') {
-      value = parseInt(value);
-    }
-
+  onNumberInputChange = (e) => {
+    let {name, value} = e.target;
+    value = value * 1 || 0;
     this.setState({
       form: {
         ...this.state.form,
@@ -129,7 +135,7 @@ class PriceForm extends React.Component {
               name="title" 
               className="form-control"
               value={form.title} 
-              onChange={this.onChange}
+              onChange={this.onInputChange}
             />
           </div>
           <div className="form-group">
@@ -144,7 +150,7 @@ class PriceForm extends React.Component {
                 className="form-control"
                 value={form.price} 
                 type="number" 
-                onChange={this.onChange}
+                onChange={this.onNumberInputChange}
               />
             </div>
           </div>
@@ -156,7 +162,7 @@ class PriceForm extends React.Component {
               className="form-control"
               value={form.date} 
               type="date" 
-              onChange={this.onChange}
+              onChange={this.onInputChange}
             />
           </div>
           
