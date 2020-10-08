@@ -49,27 +49,31 @@ class App extends React.Component {
       }),
 
       getEditData: withLoading(async (id) => {
-        const promiseArr = [categoryAPI.getCategories()];
-        if (id) {
-          promiseArr.push(itemAPI.getItemById(id));
-        }
-        const [categoryRes, editItemRes] = await Promise.all(promiseArr);
-        const categories = flattenArr(categoryRes.data);
-        const editItem = editItemRes ? editItemRes.data : null;
-        this.setState({
-          categories,
-          isLoading: false,
-        });
-        
-        if (editItem) {
-          // edit mode
+        const { items, categories } = this.state;
+        // categories 请求优化
+        if (Object.keys(categories).length === 0) {
+          const categoryRes = await categoryAPI.getCategories();
+          const fetchedCategories = flattenArr(categoryRes.data);
           this.setState({
-            items: {
-              ...this.state.items,
-              [editItem.id]: editItem,
-            }
+            categories: fetchedCategories,
           });
         }
+        // edit item 数据请求优化
+        if (id) {
+          const isItemAlreadyFetched = Object.keys(items).includes(id);
+          if (!isItemAlreadyFetched) {
+            const { data: editItem } = await itemAPI.getItemById(id);
+            this.setState({
+              items: {
+                ...this.state.items,
+                [editItem.id]: editItem,
+              }
+            });
+          }
+        }
+        this.setState({
+          isLoading: false,
+        });
       }),
 
       selectNewMonth: withLoading(async (year, month) => {

@@ -15,8 +15,6 @@ import {
   LIST_VIEW,
   CHART_VIEW,
   TYPE_OUTCOME,
-  parseToYearAndMonth,
-  padMonth,
 } from '../utility';
 
 const tabText = [LIST_VIEW, CHART_VIEW];
