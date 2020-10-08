@@ -9,6 +9,7 @@ import {
   createID, 
   parseToYearAndMonth, 
   createTimestamp,
+  getYearMonthStr,
 } from './utility';
 
 import * as itemAPI from './api/item';
@@ -103,7 +104,7 @@ class App extends React.Component {
           ...item,
           cid: categoryId,
           id: newID,
-          monthCategory: `${parseDate.year}-${parseDate.month}`,
+          monthCategory: getYearMonthStr(parseDate),
           timestamp: createTimestamp(item.date),
         };
 
@@ -122,6 +123,7 @@ class App extends React.Component {
         const modifiedItem = {
           ...item,
           cid: updatedCategoryId,
+          monthCategory: getYearMonthStr(item.date),
           timestamp: createTimestamp(item.date),
         };
 

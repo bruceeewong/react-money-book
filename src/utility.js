@@ -52,13 +52,32 @@ export const toggleClass = (input, expect, activeCls, defaultCls) => {
  * 将日期字符解析为年月字段, 不传则获取当前年月
  * @param {string} str 
  */
-export const parseToYearAndMonth = (str) => {
-  const date = typeof str === 'string' ? new Date(str) : new Date();
+export const parseToYearAndMonth = (val) => {
+  let date = null;
+  if (typeof val === 'string') {
+    date = new Date(val);
+  } else if (val instanceof Date) {
+    date = val;
+  } else {
+    date = new Date();
+  }
   return {
     year: date.getFullYear(),
     month: date.getMonth() + 1,
   };
 };
+
+export const getYearMonthStr = (val) => {
+  let yearMonth = null;
+  if (typeof val === 'string') {
+    yearMonth = parseToYearAndMonth(val);
+  } else if (typeof val === 'object' && val.year && val.month) {
+    yearMonth = val;
+  } else {
+    throw new TypeError('param should be date like type');
+  }
+  return `${yearMonth.year}-${yearMonth.month}`;
+}
 
 /**
  * 将数组中元素按id展成map

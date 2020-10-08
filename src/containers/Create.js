@@ -1,15 +1,17 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import withContext from '../WithContext';
 import Header from '../components/Header';
 import {Tabs, Tab} from '../components/Tabs';
 import CategorySelect from '../components/CategorySelect';
 import PriceForm from '../components/PriceForm';
+import Loader from '../components/Loader';
 import { TYPE_INCOME, TYPE_OUTCOME } from '../utility';
-import withContext from '../WithContext';
 
 const typeList = [TYPE_OUTCOME, TYPE_INCOME];
 const getTypeIndex = (type) => typeList.findIndex(t => t === type);
 
-class Create extends React.Component {
+export class Create extends React.Component {
   constructor(props) {
     super(props);
     const { id } = this.props.match.params;
@@ -61,6 +63,12 @@ class Create extends React.Component {
     return contextData.categories[item.cid];
   }
 
+  filterCategoryByType = (type) => {
+    const { data: contextData } = this.props;
+    return Object.values(contextData.categories)
+      .filter(c => c.type === type);
+  }
+
   selectType = (index) => {
     this.setState({
       activeTabIndex: index,
@@ -106,44 +114,49 @@ class Create extends React.Component {
       alertMsg,
     } = this.state;
 
-    const { id } = this.props.match.params;
-    const editItem = (id && contextData.items[id]) ? contextData.items[id] : {};
-
-    const filteredCategories = Object.values(contextData.categories)
-      .filter(c => c.type === typeList[activeTabIndex]);
+    const tryEditItem = this.getItemById(this.props.match.params.id);
+    const editItem = tryEditItem ? tryEditItem : {};
+    const filteredCategories = this.filterCategoryByType(typeList[activeTabIndex]);
 
     return (
       <React.Fragment>
         <Header></Header>
-        <main className="px-4">
-          <Tabs 
-            activeIndex={activeTabIndex}
-            onTabChange={this.selectType}  
-          >
-            <Tab>支出</Tab>
-            <Tab>收入</Tab>
-          </Tabs>
-
-          <CategorySelect
-            categories={filteredCategories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={this.selectCategory}
-          />
-
-          <PriceForm
-            form={editItem}
-            onFormSubmit={this.submitForm}
-            onFormCancel={this.cancelSubmit}
-          ></PriceForm>
-
-        {
-          !validatePass &&
-          <div className="alert alert-danger mt-3">{alertMsg}</div>
+        { 
+          contextData.isLoading &&
+          <Loader />
         }
-        </main>
+        {
+          !contextData.isLoading &&
+          <main className="px-4">
+            <Tabs 
+              activeIndex={activeTabIndex}
+              onTabChange={this.selectType}  
+            >
+              <Tab>支出</Tab>
+              <Tab>收入</Tab>
+            </Tabs>
+
+            <CategorySelect
+              categories={filteredCategories}
+              selectedCategory={selectedCategory}
+              onSelectCategory={this.selectCategory}
+            />
+
+            <PriceForm
+              form={editItem}
+              onFormSubmit={this.submitForm}
+              onFormCancel={this.cancelSubmit}
+            ></PriceForm>
+
+          {
+            !validatePass &&
+            <div className="alert alert-danger mt-3">{alertMsg}</div>
+          }
+          </main>
+        }
       </React.Fragment>
     );
   }
 }
 
-export default withContext(Create);
+export default withRouter(withContext(Create));
