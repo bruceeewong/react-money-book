@@ -86,6 +86,12 @@ describe('test PriceForm controlled input', () => {
     priceInput.simulate('change', fakeEvent('price', ''));
     expect(wrapper.state('form').price).toEqual(0);
   });
+
+  it('should convert string like 01 to number 1 in state', () => {
+    const priceInput = wrapper.find('#form-price');
+    priceInput.simulate('change', fakeEvent('price', '01'));
+    expect(wrapper.state('form').price).toEqual(1);
+  });
 });
 
 describe('test PriceForm form validation', () => {

@@ -107,7 +107,7 @@ class PriceForm extends React.Component {
 
   onNumberInputChange = (e) => {
     let {name, value} = e.target;
-    value = value * 1 || 0;
+    value = parseFloat(value) || 0;
     this.setState({
       form: {
         ...this.state.form,
@@ -148,7 +148,7 @@ class PriceForm extends React.Component {
                 id="form-price" 
                 name="price" 
                 className="form-control"
-                value={form.price} 
+                value={form.price.toString()} 
                 type="number" 
                 onChange={this.onNumberInputChange}
               />
