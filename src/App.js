@@ -100,7 +100,7 @@ class App extends React.Component {
       createItem: withLoading(async (item, categoryId) => {
         const newID = createID();
         const parseDate = parseToYearAndMonth(item.date);
-        const data = {
+        const newItem = {
           ...item,
           cid: categoryId,
           id: newID,
@@ -108,12 +108,12 @@ class App extends React.Component {
           timestamp: createTimestamp(item.date),
         };
 
-        const newItem = await itemAPI.addItem(data);
+        const res = await itemAPI.addItem(newItem);
     
         this.setState({
           items: {
             ...this.state.items,
-            [newID]: newItem.data,
+            [newID]: res.data,
           },
           isLoading: false,
         });
@@ -127,12 +127,12 @@ class App extends React.Component {
           timestamp: createTimestamp(item.date),
         };
 
-        await itemAPI.updateItem(modifiedItem.id, modifiedItem);
+        const res = await itemAPI.updateItem(modifiedItem.id, modifiedItem);
 
         this.setState({
           items: {
             ...this.state.items,
-            [modifiedItem.id]: modifiedItem,
+            [modifiedItem.id]: res.data,
           },
           isLoading: false,
         });
