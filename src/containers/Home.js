@@ -87,7 +87,6 @@ export class Home extends React.Component {
         totalIncome += (item.price * 1);
       }
     });
-    console.log(totalIncome, totalOutcome);
 
     const chartOutcomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_OUTCOME);
     const chartIncomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_INCOME);
